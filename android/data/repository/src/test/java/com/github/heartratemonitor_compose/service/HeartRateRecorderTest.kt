@@ -377,13 +377,43 @@ class HeartRateRecorderTest {
         recorder.startSession("Device A")
         recorder.record(60, "Device A")
 
-        recorder.flushPendingRecords() // 不抛
+        recorder.flushPendingRecords() // 触发约束异常
 
-        // 约束失败语义：本批丢弃（不 re-add），会话重置（后续记录归属新会话）
+        // 约束失败后丢弃：缓冲不 re-add，会话复位，后续记录进新会话
         assertThat(recorder.drainPendingRecords()).isEmpty()
         recorder.record(70, "Device A")
         recorder.flushPendingRecords()
         assertThat(recorder.drainPendingRecords()).isEmpty()
         recorder.cancelFlushLoop()
+    }
+
+    // ── 秒级网格前向填充（gapFillGrid 纯函数）──
+
+    @Test
+    fun `gap grid empty under normal 1hz cadence`() {
+        // 正常 1Hz（缺口 1000ms）不填充
+        assertThat(HeartRateRecorder.gapFillGrid(10_000L, 11_000L)).isEmpty()
+        // 稍有抖动（1499ms）也不填充
+        assertThat(HeartRateRecorder.gapFillGrid(10_000L, 11_499L)).isEmpty()
+    }
+
+    @Test
+    fun `gap grid fills every second between anchors`() {
+        // 设备 0.5Hz（2s 间隔）：补 1 行（anchor+1s）
+        assertThat(HeartRateRecorder.gapFillGrid(10_000L, 12_000L))
+            .containsExactly(11_000L)
+        // 3s 缺口：补 2 行
+        assertThat(HeartRateRecorder.gapFillGrid(10_000L, 13_000L))
+            .containsExactly(11_000L, 12_000L).inOrder()
+        // 10s 上限整好填满
+        assertThat(HeartRateRecorder.gapFillGrid(10_000L, 20_000L)).hasSize(9)
+    }
+
+    @Test
+    fun `gap grid empty for long dropout (no fabricated data)`() {
+        // 断链/佩戴松动的长缺口不伪造数据
+        assertThat(HeartRateRecorder.gapFillGrid(10_000L, 20_001L)).isEmpty()
+        // 会话首条（无锚点）不填充
+        assertThat(HeartRateRecorder.gapFillGrid(0L, 12_000L)).isEmpty()
     }
 }

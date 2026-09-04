@@ -45,17 +45,18 @@ class HistoryRepository @Inject constructor(private val dao: HeartRateDao) {
     suspend fun deleteSessionsByIds(ids: List<Long>) = dao.deleteSessionsByIds(ids)
 
     /**
-     * 调试用：写入一段约 15 分钟的模拟心率会话（每 2 秒一条，共 450 条）。
+     * 调试用：写入一段约 2 分钟的模拟心率会话（每秒一条，共 120 条，
+     * 与真实设备常见 1Hz 广播节奏一致，导出的 CSV 即 1 秒 1 行）。
      * 曲线：70 bpm 起步，前 1/4 热身爬升至 150，中段高强度区间 5 周期正弦振荡，
      * 末 15% 缓和回落至 85，全程叠加 ±4 随机噪声。
      * 入口为历史页标题长按（隐藏手势），用于无实体设备时验证图表与 CSV 导出链路。
      */
     suspend fun insertDebugSession(now: Long = System.currentTimeMillis()) {
-        val durationMs = 15 * 60 * 1000L
-        val intervalMs = 2_000L
+        val durationMs = 2 * 60 * 1000L
+        val intervalMs = 1_000L
         val count = (durationMs / intervalMs).toInt()
-        // 结束于 5 分钟前：避免与「进行中」会话混淆，列表中呈现为刚完成的会话
-        val startTime = now - durationMs - 5 * 60_000L
+        // 结束于 1 分钟前：避免与「进行中」会话混淆，列表中呈现为刚完成的会话
+        val startTime = now - durationMs - 60_000L
         val sessionId = dao.insertSession(
             HeartRateSession(
                 deviceName = "Debug Device",

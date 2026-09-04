@@ -33,6 +33,10 @@ class HeartRateRecorder(
     private val pendingRecordsLock = Any()
     private var recordFlushJob: Job? = null
 
+    // 秒级网格填充状态：上一写入锚点的时间与数值（含填充行），随 startSession/endSession 复位
+    private var padAnchorTime = 0L
+    private var padAnchorBpm = 0
+
 
     suspend fun startSession(deviceName: String): Long? {
         if (!isHistoryEnabled()) return null
@@ -45,6 +49,8 @@ class HeartRateRecorder(
         )
         currentSessionId = dao.insertSession(session)
         trimOldSessionsIfNeeded()
+        padAnchorTime = 0L
+        padAnchorBpm = 0
         startRecordFlushLoop()
         return currentSessionId
     }
@@ -62,17 +68,30 @@ class HeartRateRecorder(
             )
             currentSessionId = dao.insertSession(session)
             trimOldSessionsIfNeeded()
+            padAnchorTime = 0L
+            padAnchorBpm = 0
             startRecordFlushLoop()
         }
 
         synchronized(pendingRecordsLock) {
+            val sessionId = currentSessionId!!
+            val now = System.currentTimeMillis()
+            // 秒级网格前向填充：设备广播间隔 >1.5s 时（如 0.5Hz 广播的手环），
+            // 按每秒补一条前值，使历史与导出 CSV 恒为 1 行/秒（视频叠加友好的均匀采样）；
+            // 缺口超过 10s 不填充——断链/佩戴松动期间不得伪造数据。
+            val anchor = padAnchorTime
+            for (t in gapFillGrid(anchor, now)) {
+                pendingRecords.add(HeartRateRecord(sessionId = sessionId, timestamp = t, heartRate = padAnchorBpm))
+            }
             pendingRecords.add(
                 HeartRateRecord(
-                    sessionId = currentSessionId!!,
-                    timestamp = System.currentTimeMillis(),
+                    sessionId = sessionId,
+                    timestamp = now,
                     heartRate = bpm
                 )
             )
+            padAnchorTime = now
+            padAnchorBpm = bpm
             // 超出宽松上限时丢弃最旧记录（缓冲头部）：DB 持续故障时 flush 反复失败、
             // 记录被放回缓冲，只有此增长点设上限才能保证缓冲有界（约 1 小时心率量），
             // 同时让 onDestroy 分片入队的总量可控。put-back 路径的瞬时超限会在下次
@@ -88,6 +107,8 @@ class HeartRateRecorder(
     suspend fun endSession() {
         cancelFlushLoop()
         flushPendingRecords()
+        padAnchorTime = 0L
+        padAnchorBpm = 0
         currentSessionId?.let { id ->
             try {
                 dao.endSession(id, System.currentTimeMillis())
@@ -225,5 +246,26 @@ class HeartRateRecorder(
          * 限制。超限时丢弃最旧记录（保留最近约 1 小时），属故障场景下的降级取舍。
          */
         private const val MAX_PENDING_RECORDS = 3600
+
+        /** 前向填充触发的最小缺口（<1.5s 视为正常 1Hz 节奏，不补） */
+        private const val FILL_MIN_GAP_MS = 1500L
+
+        /** 前向填充允许的最大缺口（更大缺口视为断链/佩戴松动，不伪造数据） */
+        private const val MAX_GAP_FILL_MS = 10_000L
+
+        /**
+         * 计算需前向填充的 1s 网格时间戳（不含锚点与 [now]）。
+         * 纯函数，供单测；缺口 <[FILL_MIN_GAP_MS] 或 >[MAX_GAP_FILL_MS] 时为空。
+         */
+        internal fun gapFillGrid(anchor: Long, now: Long): List<Long> {
+            if (anchor <= 0L || now - anchor !in FILL_MIN_GAP_MS..MAX_GAP_FILL_MS) return emptyList()
+            val out = ArrayList<Long>()
+            var t = anchor + 1000L
+            while (t < now) {
+                out.add(t)
+                t += 1000L
+            }
+            return out
+        }
     }
 }

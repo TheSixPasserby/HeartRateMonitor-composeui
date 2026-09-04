@@ -584,6 +584,10 @@ class BleConnectionHandler(
             repository.setRecordingStartTime(
                 if (sessionId != null) System.currentTimeMillis() else null
             )
+            if (sessionId != null) {
+                // 手动开始时清空实时图表并归零时间基准：折线从 0 秒重新绘制，极值同步重置
+                repository.resetChartSession()
+            }
         }
     }
 

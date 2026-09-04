@@ -187,7 +187,8 @@ class SessionChartTracker(
 
     /**
      * 新会话开始：重置时间基准与全部缓存，并清零 MAX/MIN。
-     * 在连接建立（[BleConnectionHandler] State.Connected）处调用，与 startSession 同位置。
+     * 调用点：连接建立（[BleConnectionHandler] State.Connected），以及手动模式
+     * startRecording 成功处（折线从记录开始时刻的 0 秒重新绘制）。
      * @Synchronized 保证线程安全。
      */
     @Synchronized
