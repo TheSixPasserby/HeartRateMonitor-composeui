@@ -206,4 +206,10 @@
     
     ब्लूटूथ हृदय गति सेवा (BleService) फोरग्राउंड सेवा के रूप में निरंतर चलती है और मेमोरी चेतावनियों से बाधित नहीं होती। स्टेटस बार सेवा और फ्लोटिंग विंडो सेवा अत्यधिक मेमोरी दबाव में सिस्टम द्वारा वापस ली जा सकती हैं; ऐप अगली बार लॉन्च पर स्वचालित रूप से पुनर्स्थापित हो जाएगा।</string>
     <string name="original_author">मूल लेखक</string>
+    <string name="record_mode_manual">मैन्युअल</string>
+    <string name="record_mode_manual_desc">होम पेज के बटन से शुरू और रोकें</string>
+    <string name="record_mode_auto">ऑटो</string>
+    <string name="record_mode_auto_desc">डिवाइस कनेक्ट होने पर अपने आप रिकॉर्ड शुरू होता है</string>
+    <string name="record_mode_off">बंद</string>
+    <string name="record_mode_off_desc">इतिहास डेटा सहेजा नहीं जाता</string>
 </resources>

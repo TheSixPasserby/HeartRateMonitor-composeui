@@ -31,4 +31,7 @@
     <string name="reset">إعادة تعيين</string>
     <string name="warm_tip_title">تنبيه</string>
     <string name="warm_tip_message">يرجى تمكين ميزة بث معدل النبض على جهازك قبل النقر على بحث.</string>
+    <string name="start_recording">بدء التسجيل</string>
+    <string name="stop_recording">إيقاف التسجيل</string>
+    <string name="recording_saved">تم الحفظ في السجل</string>
 </resources>

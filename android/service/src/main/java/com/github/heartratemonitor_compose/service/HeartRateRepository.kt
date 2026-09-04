@@ -5,7 +5,6 @@ import com.github.heartratemonitor_compose.ble.HeartRateMeasurement
 import com.github.heartratemonitor_compose.data.model.ChartDataSnapshot
 import com.github.heartratemonitor_compose.data.model.ScannedDevice
 import com.github.heartratemonitor_compose.data.repository.SettingsRepository
-import com.github.heartratemonitor_compose.data.settings.SettingsKeys
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -61,10 +60,18 @@ class HeartRateRepository @Inject constructor(
     private val _speed = MutableStateFlow(0f)
     val speed: StateFlow<Float> = _speed.asStateFlow()
 
+    /**
+     * 手动记录会话的开始时间戳（epoch ms，null = 未在手动记录）。
+     * 仅手动模式（RecordingMode.MANUAL）下由 BleConnectionHandler 的用户指令路径写入，
+     * 首页据此渲染记录按钮/计时器；AUTO 模式不落此状态（连接生灭即会话生灭）。
+     */
+    private val _recordingStartTime = MutableStateFlow<Long?>(null)
+    val recordingStartTime: StateFlow<Long?> = _recordingStartTime.asStateFlow()
+
     // 服务层会话图表追踪器：StateFlow 重放实现「重进即恢复」
-    // 历史记录开关关闭期间仅跟踪极值、不统计图表点，开启后从零开始绘制
+    // 记录模式为「不记录」时仅跟踪极值、不统计图表点，其余模式（含手动未点录间）正常绘制
     private val sessionChartTracker = SessionChartTracker(repositoryScope) {
-        settingsRepository.get(SettingsKeys.HISTORY_RECORDING_ENABLED)
+        settingsRepository.recordingEnabled()
     }
     val chartDataSnapshot: StateFlow<ChartDataSnapshot?> = sessionChartTracker.chartDataSnapshot
     val sessionMaxHr: StateFlow<Int> = sessionChartTracker.sessionMaxHr
@@ -94,6 +101,11 @@ class HeartRateRepository @Inject constructor(
 
     fun updateSpeed(value: Float) {
         _speed.value = value
+    }
+
+    /** 手动记录开始/结束时间标记（null 表示停止）。详见 [recordingStartTime]。 */
+    fun setRecordingStartTime(startTime: Long?) {
+        _recordingStartTime.value = startTime
     }
 
     // ── 图表追踪代理（原 Handler 对 SessionChartTracker 的调用点）──
@@ -132,6 +144,7 @@ class HeartRateRepository @Inject constructor(
         _scanResults.value = emptyList()
         _connectedDevice.value = null
         _speed.value = 0f
+        _recordingStartTime.value = null
         sessionChartTracker.resetSessionExtremes()
         sessionChartTracker.clear()
     }

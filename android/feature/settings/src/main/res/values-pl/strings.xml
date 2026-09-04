@@ -206,4 +206,10 @@
     
     Usługa tętna Bluetooth (BleService) działa jako usługa na pierwszym planie i nie jest przerywana przez ostrzeżenia o pamięci. Usługa paska stanu i usługa pływającego okna mogą zostać zwolnione przez system przy skrajnym niedoborze pamięci; aplikacja automatycznie przywróci się przy następnym uruchomieniu.</string>
     <string name="original_author">Autor oryginału</string>
+    <string name="record_mode_manual">Ręcznie</string>
+    <string name="record_mode_manual_desc">Rozpoczynaj i zatrzymuj przyciskiem na stronie głównej</string>
+    <string name="record_mode_auto">Automatycznie</string>
+    <string name="record_mode_auto_desc">Nagrywa automatycznie po połączeniu urządzenia</string>
+    <string name="record_mode_off">Wyłączone</string>
+    <string name="record_mode_off_desc">Nie zapisuj danych historii</string>
 </resources>

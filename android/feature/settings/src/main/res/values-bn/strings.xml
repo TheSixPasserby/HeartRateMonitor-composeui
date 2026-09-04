@@ -206,4 +206,10 @@
     
     ব্লুটুথ হৃদস্পন্দন সার্ভিস (BleService) ফোরগ্রাউন্ড সার্ভিস হিসেবে অবিরত চলে এবং মেমোরি সতর্কতায় বিঘ্নিত হয় না। স্ট্যাটাস বার সার্ভিস এবং ফ্লোটিং উইন্ডো সার্ভিস চরম মেমোরি চাপে সিস্টেম দ্বারা পুনরুদ্ধার হতে পারে; অ্যাপটি পরের বার খোলার সময় স্বয়ংক্রিয়ভাবে পুনরুদ্ধার হবে।</string>
     <string name="original_author">মূল লেখক</string>
+    <string name="record_mode_manual">ম্যানুয়াল</string>
+    <string name="record_mode_manual_desc">হোম পেজের বোতাম দিয়ে শুরু ও বন্ধ করুন</string>
+    <string name="record_mode_auto">অটো</string>
+    <string name="record_mode_auto_desc">ডিভাইস সংযুক্ত হলে স্বয়ংক্রিয়ভাবে রেকর্ড করে</string>
+    <string name="record_mode_off">বন্ধ</string>
+    <string name="record_mode_off_desc">ইতিহাসের ডেটা সংরক্ষণ করা হয় না</string>
 </resources>

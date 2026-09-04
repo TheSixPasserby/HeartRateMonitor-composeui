@@ -206,4 +206,10 @@
     
     ブルートゥース心拍数サービス（BleService）はフォアグラウンドサービスとして継続的に動作し、メモリ警告によって中断されることはありません。ステータスバー常駐サービスとフローティングウィンドウサービスは、メモリが極端に逼迫した場合にシステムによって回収される可能性がありますが、アプリは次回起動時に自動的に復元されます。</string>
     <string name="original_author">原作者</string>
+    <string name="record_mode_manual">手動</string>
+    <string name="record_mode_manual_desc">ホーム画面のボタンで記録を開始・停止</string>
+    <string name="record_mode_auto">自動</string>
+    <string name="record_mode_auto_desc">デバイス接続時に自動で記録を開始</string>
+    <string name="record_mode_off">オフ（記録しない）</string>
+    <string name="record_mode_off_desc">履歴データを保存しません</string>
 </resources>

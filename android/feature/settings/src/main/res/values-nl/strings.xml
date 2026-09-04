@@ -206,4 +206,10 @@
     
     De Bluetooth-hartslagservice (BleService) werkt continu als voorgrondservice en wordt niet onderbroken door geheugenwaarschuwingen. De statusbalkservice en de zwevend venster-service kunnen door het systeem worden teruggehaald bij extreme geheugendruk; de app herstelt automatisch bij de volgende opening.</string>
     <string name="original_author">Oorspronkelijke auteur</string>
+    <string name="record_mode_manual">Handmatig</string>
+    <string name="record_mode_manual_desc">Start en stop via de knop op de startpagina</string>
+    <string name="record_mode_auto">Automatisch</string>
+    <string name="record_mode_auto_desc">Neemt automatisch op bij apparaatverbinding</string>
+    <string name="record_mode_off">Uit</string>
+    <string name="record_mode_off_desc">Historische gegevens niet opslaan</string>
 </resources>

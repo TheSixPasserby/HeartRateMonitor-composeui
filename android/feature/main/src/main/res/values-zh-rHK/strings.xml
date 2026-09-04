@@ -31,4 +31,7 @@
     <string name="reset">重置</string>
     <string name="warm_tip_title">溫馨提示</string>
     <string name="warm_tip_message">請先開啟裝置上的心率廣播功能後再點擊搜尋</string>
+    <string name="start_recording">開始記錄</string>
+    <string name="stop_recording">停止記錄</string>
+    <string name="recording_saved">已儲存至歷史記錄</string>
 </resources>

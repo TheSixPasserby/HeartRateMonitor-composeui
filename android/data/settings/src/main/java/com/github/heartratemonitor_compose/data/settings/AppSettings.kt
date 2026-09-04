@@ -14,7 +14,8 @@ import androidx.datastore.preferences.core.Preferences
  *   该调用点保留显式默认值参数，不纳入本快照语义。
  */
 data class AppSettings(
-    val historyRecordingEnabled: Boolean,
+    /** 历史记录模式：[RecordingMode].OFF / AUTO / MANUAL（取代旧布尔开关） */
+    val recordingMode: String,
     val heartbeatAnimationEnabled: Boolean,
     val speedDisplayEnabled: Boolean,
     val hideFromRecentsEnabled: Boolean,
@@ -102,6 +103,9 @@ data class AppSettings(
 
         val DEFAULTS: Map<Preferences.Key<*>, Any?> = buildMap {
             put(SettingsKeys.HISTORY_RECORDING_ENABLED, false,
+)
+            // 手动为默认：连接即自动记录的历史行为仅旧用户经迁移保留为 AUTO
+            put(SettingsKeys.RECORDING_MODE, RecordingMode.MANUAL,
 )
             put(SettingsKeys.HEARTBEAT_ANIMATION_ENABLED, true,
 )
@@ -244,7 +248,10 @@ data class AppSettings(
         fun <T> defaultFor(key: Preferences.Key<T>): T = DEFAULTS.getValue(key) as T
 
         fun from(prefs: Preferences): AppSettings = AppSettings(
-            historyRecordingEnabled = prefs.orDefault(SettingsKeys.HISTORY_RECORDING_ENABLED),
+            // 旧布尔开关迁移：mode 键缺失时，旧 true → AUTO（保留旧行为），旧 false/缺失 → MANUAL（新默认）
+            recordingMode = prefs[SettingsKeys.RECORDING_MODE]
+                ?: if (prefs.orDefault(SettingsKeys.HISTORY_RECORDING_ENABLED)) RecordingMode.AUTO
+                   else RecordingMode.MANUAL,
             heartbeatAnimationEnabled = prefs.orDefault(SettingsKeys.HEARTBEAT_ANIMATION_ENABLED),
             speedDisplayEnabled = prefs.orDefault(SettingsKeys.SPEED_DISPLAY_ENABLED),
             hideFromRecentsEnabled = prefs.orDefault(SettingsKeys.HIDE_FROM_RECENTS_ENABLED),

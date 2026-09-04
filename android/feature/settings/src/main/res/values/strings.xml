@@ -206,5 +206,11 @@
     
     BLE heart rate service (BleService) runs as a foreground service and won\'t be interrupted by memory warnings. Status bar resident service and floating window service may be reclaimed by the system under extreme memory pressure; the app will auto-recover on next launch.</string>
     <string name="original_author">Original Author</string>
+    <string name="record_mode_manual">Manual</string>
+    <string name="record_mode_manual_desc">Tap the record button on the home page to start and stop</string>
+    <string name="record_mode_auto">Auto</string>
+    <string name="record_mode_auto_desc">Record automatically when the device connects</string>
+    <string name="record_mode_off">Off</string>
+    <string name="record_mode_off_desc">Do not save history data</string>
 </resources>
 

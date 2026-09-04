@@ -206,4 +206,10 @@
     
     Dịch vụ nhịp tim Bluetooth (BleService) chạy liên tục như dịch vụ nền trước và không bị gián đoạn bởi cảnh báo bộ nhớ. Dịch vụ thanh trạng thái và dịch vụ cửa sổ nổi có thể bị hệ thống thu hồi khi áp lực bộ nhớ cực lớn; ứng dụng sẽ tự khôi phục ở lần mở tiếp theo.</string>
     <string name="original_author">Tác giả gốc</string>
+    <string name="record_mode_manual">Thủ công</string>
+    <string name="record_mode_manual_desc">Bấm nút trên trang chủ để bắt đầu và dừng ghi</string>
+    <string name="record_mode_auto">Tự động</string>
+    <string name="record_mode_auto_desc">Tự động ghi khi kết nối thiết bị</string>
+    <string name="record_mode_off">Tắt</string>
+    <string name="record_mode_off_desc">Không lưu dữ liệu lịch sử</string>
 </resources>

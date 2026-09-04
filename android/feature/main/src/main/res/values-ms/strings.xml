@@ -31,4 +31,7 @@
     <string name="reset">Set semula</string>
     <string name="warm_tip_title">Peringatan</string>
     <string name="warm_tip_message">Aktifkan fungsi siaran kadar jantung pada peranti sebelum mengetik Cari.</string>
+    <string name="start_recording">Mula rakam</string>
+    <string name="stop_recording">Henti rakam</string>
+    <string name="recording_saved">Disimpan ke sejarah</string>
 </resources>

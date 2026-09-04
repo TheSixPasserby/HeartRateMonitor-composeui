@@ -206,4 +206,10 @@
     
     Bluetooth-сервис пульса (BleService) работает как постоянный сервис и не прерывается предупреждениями о памяти. Сервис строки состояния и сервис плавающего окна могут быть освобождены системой при крайней нехватке памяти; приложение автоматически восстановится при следующем запуске.</string>
     <string name="original_author">Оригинальный автор</string>
+    <string name="record_mode_manual">Вручную</string>
+    <string name="record_mode_manual_desc">Кнопка на главном экране запускает и останавливает запись</string>
+    <string name="record_mode_auto">Авто</string>
+    <string name="record_mode_auto_desc">Запись начинается автоматически при подключении устройства</string>
+    <string name="record_mode_off">Выкл</string>
+    <string name="record_mode_off_desc">Данные истории не сохраняются</string>
 </resources>

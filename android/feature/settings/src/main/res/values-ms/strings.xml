@@ -206,4 +206,10 @@
     
     Perkhidmatan kadar jantung Bluetooth (BleService) berjalan berterusan sebagai perkhidmatan latar hadapan dan tidak terganggu oleh amaran memori. Perkhidmatan bar status dan perkhidmatan tetingkap terapung mungkin diambil semula oleh sistem di bawah tekanan memori melampau; aplikasi akan pulih secara automatik pada pembukaan seterusnya.</string>
     <string name="original_author">Pengarang asal</string>
+    <string name="record_mode_manual">Manual</string>
+    <string name="record_mode_manual_desc">Mula dan henti melalui butang di halaman utama</string>
+    <string name="record_mode_auto">Auto</string>
+    <string name="record_mode_auto_desc">Rakam secara automatik apabila peranti bersambung</string>
+    <string name="record_mode_off">Mati</string>
+    <string name="record_mode_off_desc">Tidak menyimpan data sejarah</string>
 </resources>

@@ -31,4 +31,7 @@
     <string name="reset">รีเซ็ต</string>
     <string name="warm_tip_title">ข้อแนะนำ</string>
     <string name="warm_tip_message">โปรดเปิดฟังก์ชันกระจายอัตราการเต้นหัวใจบนอุปกรณ์ก่อนแตะค้นหา</string>
+    <string name="start_recording">เริ่มบันทึก</string>
+    <string name="stop_recording">หยุดบันทึก</string>
+    <string name="recording_saved">บันทึกลงประวัติแล้ว</string>
 </resources>

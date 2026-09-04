@@ -31,4 +31,7 @@
     <string name="reset">Atur ulang</string>
     <string name="warm_tip_title">Tips</string>
     <string name="warm_tip_message">Aktifkan fungsi siaran detak jantung di perangkat sebelum mengetuk Cari.</string>
+    <string name="start_recording">Mulai merekam</string>
+    <string name="stop_recording">Berhenti merekam</string>
+    <string name="recording_saved">Tersimpan ke riwayat</string>
 </resources>

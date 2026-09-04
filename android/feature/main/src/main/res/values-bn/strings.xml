@@ -31,4 +31,7 @@
     <string name="reset">রিসেট</string>
     <string name="warm_tip_title">অনুরোধ</string>
     <string name="warm_tip_message">অনুসন্ধানে ট্যাপ করার আগে আপনার ডিভাইসে হৃদস্পন্দন সম্প্রচার বৈশিষ্ট্য চালু করুন।</string>
+    <string name="start_recording">রেকর্ডিং শুরু করুন</string>
+    <string name="stop_recording">রেকর্ডিং বন্ধ করুন</string>
+    <string name="recording_saved">ইতিহাসে সংরক্ষণ করা হয়েছে</string>
 </resources>

@@ -72,6 +72,19 @@ internal fun MainViewModel.bindRepositoryStreams(repository: HeartRateRepository
                 }
             }
 
+            // 手动记录计时状态（首页播放/停止按钮 + 计时器数据源）
+            launch {
+                try {
+                    repository.recordingStartTime.collect { startTime ->
+                        reduceState { it.copy(recordingStartTime = startTime) }
+                    }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    Log.e("MainViewModel", "记录计时状态订阅异常终止", e)
+                }
+            }
+
             // 订阅服务层图表流（SessionChartTracker）：StateFlow 重放实现「重进即恢复」
             launch {
                 try {

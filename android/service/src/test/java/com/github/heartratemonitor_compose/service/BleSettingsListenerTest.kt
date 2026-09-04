@@ -3,6 +3,7 @@ package com.github.heartratemonitor_compose.service
 import androidx.datastore.preferences.core.edit
 import androidx.test.core.app.ApplicationProvider
 import com.github.heartratemonitor_compose.data.settings.SETTINGS_FILE_NAME
+import com.github.heartratemonitor_compose.data.settings.RecordingMode
 import com.github.heartratemonitor_compose.data.settings.SettingsKeys
 import com.github.heartratemonitor_compose.data.repository.SettingsRepository
 import com.github.heartratemonitor_compose.data.settings.settingsDataStore
@@ -128,27 +129,28 @@ class BleSettingsListenerTest {
     // ── 历史记录设置 ──
 
     @Test
-    fun `history recording disabled triggers history callback`() {
-        // 先设为 true，再设为 false → 触发回调
-        repo.set(SettingsKeys.HISTORY_RECORDING_ENABLED, true)
+    fun `recording mode switch to OFF triggers history callback`() {
+        // AUTO → OFF 触发回调
+        repo.set(SettingsKeys.RECORDING_MODE, RecordingMode.AUTO)
         assertThat(historyDisabledCount).isEqualTo(0)
 
-        repo.set(SettingsKeys.HISTORY_RECORDING_ENABLED, false)
+        repo.set(SettingsKeys.RECORDING_MODE, RecordingMode.OFF)
         assertThat(historyDisabledCount).isEqualTo(1)
     }
 
     @Test
-    fun `history recording enabled does NOT trigger history callback`() {
-        repo.set(SettingsKeys.HISTORY_RECORDING_ENABLED, true)
+    fun `recording mode AUTO or MANUAL does NOT trigger history callback`() {
+        repo.set(SettingsKeys.RECORDING_MODE, RecordingMode.AUTO)
+        repo.set(SettingsKeys.RECORDING_MODE, RecordingMode.MANUAL)
         assertThat(historyDisabledCount).isEqualTo(0)
     }
 
     @Test
-    fun `history recording disabled multiple times triggers each time`() {
-        repo.set(SettingsKeys.HISTORY_RECORDING_ENABLED, true)
-        repo.set(SettingsKeys.HISTORY_RECORDING_ENABLED, false)
-        repo.set(SettingsKeys.HISTORY_RECORDING_ENABLED, true)
-        repo.set(SettingsKeys.HISTORY_RECORDING_ENABLED, false)
+    fun `recording mode switch to OFF multiple times triggers each time`() {
+        repo.set(SettingsKeys.RECORDING_MODE, RecordingMode.AUTO)
+        repo.set(SettingsKeys.RECORDING_MODE, RecordingMode.OFF)
+        repo.set(SettingsKeys.RECORDING_MODE, RecordingMode.MANUAL)
+        repo.set(SettingsKeys.RECORDING_MODE, RecordingMode.OFF)
         assertThat(historyDisabledCount).isEqualTo(2)
         assertThat(chartCacheClearCount).isEqualTo(2)
     }

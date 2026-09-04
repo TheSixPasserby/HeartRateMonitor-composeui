@@ -206,4 +206,10 @@
     
     Il servizio della frequenza cardiaca Bluetooth (BleService) opera in modo continuo come servizio in primo piano e non viene interrotto dagli avvisi di memoria. Il servizio della barra di stato e quello della finestra flottante possono essere recuperati dal sistema sotto pressione di memoria estrema; l\'app si riprenderà automaticamente alla prossima apertura.</string>
     <string name="original_author">Autore originale</string>
+    <string name="record_mode_manual">Manuale</string>
+    <string name="record_mode_manual_desc">Avvia e interrompi dal pulsante nella pagina principale</string>
+    <string name="record_mode_auto">Automatica</string>
+    <string name="record_mode_auto_desc">Registra automaticamente alla connessione del dispositivo</string>
+    <string name="record_mode_off">Disattivata</string>
+    <string name="record_mode_off_desc">Non salvare i dati storici</string>
 </resources>

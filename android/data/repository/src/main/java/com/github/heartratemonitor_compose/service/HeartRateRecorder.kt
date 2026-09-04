@@ -2,7 +2,7 @@ package com.github.heartratemonitor_compose.service
 
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
-import com.github.heartratemonitor_compose.data.settings.SettingsKeys
+import com.github.heartratemonitor_compose.data.settings.RecordingMode
 import com.github.heartratemonitor_compose.data.db.HeartRateDao
 import com.github.heartratemonitor_compose.data.db.HeartRateRecord
 import com.github.heartratemonitor_compose.data.db.HeartRateSession
@@ -53,6 +53,9 @@ class HeartRateRecorder(
         if (!isHistoryEnabled()) return
 
         if (currentSessionId == null) {
+            // 手动模式禁止懒创建：无用户显式「开始记录」产生的活动会话即不落盘；
+            // 懒创建仅保留给 AUTO（沿用连接即记的历史行为，兜住 startSession 被跳过的路径）
+            if (recorderMode() != RecordingMode.AUTO) return
             val session = HeartRateSession(
                 deviceName = deviceName,
                 startTime = System.currentTimeMillis()
@@ -151,7 +154,32 @@ class HeartRateRecorder(
     }
 
     private fun isHistoryEnabled(): Boolean {
-        return settingsRepository.get(SettingsKeys.HISTORY_RECORDING_ENABLED)
+        return settingsRepository.recordingEnabled()
+    }
+
+    private fun recorderMode(): String {
+        return settingsRepository.recordingMode()
+    }
+
+    /**
+     * 手动停止记录专用：正常结束会话后，若该会话无任何记录（如误触开始立即按停），
+     * 删除空会话，避免历史列表出现「0 条记录」卡片。会话复位语义与 [endSession] 一致。
+     */
+    suspend fun endSessionDiscardIfEmpty() {
+        val id = currentSessionId
+        if (id == null) {
+            endSession()
+            return
+        }
+        endSession()
+        try {
+            if (dao.getLastRecordTimestampForSession(id) == null) {
+                dao.deleteSession(id)
+            }
+        } catch (e: Exception) {
+            // 清理失败只留一个空会话记录，属可接受降级，不得影响结束流程
+            Log.w(TAG, "清理空会话失败（会话 $id）", e)
+        }
     }
 
     private fun startRecordFlushLoop() {

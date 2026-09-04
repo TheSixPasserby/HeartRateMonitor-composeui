@@ -61,6 +61,15 @@ interface BleConnectionManager {
 
     fun disconnectDevice()
 
+    /**
+     * 手动开始心率记录（仅 [com.github.heartratemonitor_compose.data.settings.RecordingMode].MANUAL
+     * 且已连接时有效；AUTO 模式随连接自动记录，本调用为空操作）。异步执行。
+     */
+    fun startRecording()
+
+    /** 手动停止记录并保存（无记录的会话直接丢弃，不产生空历史项）。异步执行。 */
+    fun stopRecording()
+
     companion object {
         /** 默认扫描时长（毫秒） */
         const val DEFAULT_SCAN_DURATION_MS = 15_000L

@@ -206,4 +206,10 @@
     
     บริการอัตราการเต้นของหัวใจบลูทูธ (BleService) ทำงานเป็นบริการเบื้องหน้าอย่างต่อเนื่องและไม่ถูกขัดจังหวะจากคำเตือนหน่วยความจำ บริการแถบสถานะและบริการหน้าต่างลอยอาจถูกเรียกคืนโดยระบบเมื่อหน่วยความจำตึงตัวมาก แอปจะกู้คืนโดยอัตโนมัติเมื่อเปิดครั้งถัดไป</string>
     <string name="original_author">ผู้เขียนต้นฉบับ</string>
+    <string name="record_mode_manual">ด้วยตนเอง</string>
+    <string name="record_mode_manual_desc">เริ่มและหยุดด้วยปุ่มบนหน้าแรก</string>
+    <string name="record_mode_auto">อัตโนมัติ</string>
+    <string name="record_mode_auto_desc">บันทึกอัตโนมัติเมื่อเชื่อมต่ออุปกรณ์</string>
+    <string name="record_mode_off">ปิด</string>
+    <string name="record_mode_off_desc">ไม่บันทึกข้อมูลประวัติ</string>
 </resources>

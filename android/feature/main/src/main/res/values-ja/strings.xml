@@ -31,4 +31,7 @@
     <string name="reset">リセット</string>
     <string name="warm_tip_title">ご案内</string>
     <string name="warm_tip_message">検索をタップする前に、デバイスの心拍数ブロードキャスト機能を有効にしてください。</string>
+    <string name="start_recording">記録を開始</string>
+    <string name="stop_recording">記録を停止</string>
+    <string name="recording_saved">履歴に保存しました</string>
 </resources>

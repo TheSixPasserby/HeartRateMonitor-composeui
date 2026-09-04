@@ -31,4 +31,7 @@
     <string name="reset">Đặt lại</string>
     <string name="warm_tip_title">Lưu ý</string>
     <string name="warm_tip_message">Hãy bật chức năng phát nhịp tim trên thiết bị trước khi nhấn Tìm kiếm.</string>
+    <string name="start_recording">Bắt đầu ghi</string>
+    <string name="stop_recording">Dừng ghi</string>
+    <string name="recording_saved">Đã lưu vào lịch sử</string>
 </resources>

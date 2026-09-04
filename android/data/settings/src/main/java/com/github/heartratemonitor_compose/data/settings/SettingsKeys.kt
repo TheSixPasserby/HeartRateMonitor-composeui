@@ -7,14 +7,23 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 
 /**
- * 键名字符串与 SharedPreferences / 旧 PrefsKeys 时代完全一致，
- * 保证 SharedPreferencesMigration 迁入的老数据无缝对应，禁止改动任何键名。
- * 读写一律经 SettingsRepository 的类型化 API，禁止字符串键名直接操作。
+ * 键值字符串与 SharedPreferences / 原 PrefsKeys 时期完全一致，
+ * 保证 SharedPreferencesMigration 迁移后数据无损对应。禁止更改任何键名。
+ * 读写一律走 SettingsRepository 的泛型 API（禁止字符串直接拼接键名）。
  * 默认值唯一来源是 [AppSettings.DEFAULTS]。
  */
 object SettingsKeys {
 
+    /**
+     * 旧布尔开关，仅作迁移读取保留（SharedPreferencesMigration 以来同名），
+     * 禁止新代码直接读写；行为配置一律走 [RECORDING_MODE]。
+     */
     val HISTORY_RECORDING_ENABLED = booleanPreferencesKey("history_recording_enabled")
+    /**
+     * 历史记录模式（取代旧布尔开关）：见 [RecordingMode]。
+     * 键名固定，勿改（老数据迁移依赖）。
+     */
+    val RECORDING_MODE = stringPreferencesKey("history_recording_mode")
     val HEARTBEAT_ANIMATION_ENABLED = booleanPreferencesKey("heartbeat_animation_enabled")
     val SPEED_DISPLAY_ENABLED = booleanPreferencesKey("speed_display_enabled")
     val HIDE_FROM_RECENTS_ENABLED = booleanPreferencesKey("hide_from_recents_enabled")
@@ -103,4 +112,14 @@ object SettingsKeys {
 
     /** Webhook 配置列表（kotlinx.serialization JSON 字符串）。null = 未配置。 */
     val WEBHOOKS_JSON = stringPreferencesKey("webhooks_json")
+}
+
+/** 历史记录模式取值（[SettingsKeys.RECORDING_MODE] 的合法值）。 */
+object RecordingMode {
+    /** 不记录（不创建会话、不落盘） */
+    const val OFF = "off"
+    /** 自动：连接设备即开始记录，断开即结束（旧版默认行为） */
+    const val AUTO = "auto"
+    /** 手动：由用户在首页点开始/停止记录（新默认） */
+    const val MANUAL = "manual"
 }

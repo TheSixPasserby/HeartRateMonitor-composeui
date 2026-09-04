@@ -206,5 +206,11 @@
     
     蓝牙心率服务（BleService）作为前台服务持续运行，不会因内存预警而被中断。状态栏常驻服务和悬浮窗服务在内存极端紧张时可能被系统回收，应用会在下次启动时自动恢复。</string>
     <string name="original_author">原作者</string>
+    <string name="record_mode_manual">手动</string>
+    <string name="record_mode_manual_desc">在首页点击按钮开始和停止记录</string>
+    <string name="record_mode_auto">自动</string>
+    <string name="record_mode_auto_desc">连接设备后自动开始记录</string>
+    <string name="record_mode_off">不记录</string>
+    <string name="record_mode_off_desc">不保存历史数据</string>
 </resources>
 

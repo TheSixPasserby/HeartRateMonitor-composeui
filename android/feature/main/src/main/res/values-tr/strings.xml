@@ -31,4 +31,7 @@
     <string name="reset">Sıfırla</string>
     <string name="warm_tip_title">İpucu</string>
     <string name="warm_tip_message">Aramaya dokunmadan önce cihazınızda nabız yayını özelliğini etkinleştirin.</string>
+    <string name="start_recording">Kaydı başlat</string>
+    <string name="stop_recording">Kaydı durdur</string>
+    <string name="recording_saved">Geçmişe kaydedildi</string>
 </resources>

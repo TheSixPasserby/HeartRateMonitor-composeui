@@ -31,4 +31,7 @@
     <string name="reset">I-reset</string>
     <string name="warm_tip_title">Paalala</string>
     <string name="warm_tip_message">I-enable muna ang heart rate broadcast function sa iyong device bago i-tap ang Search.</string>
+    <string name="start_recording">Simulan ang pagrekord</string>
+    <string name="stop_recording">Itigil ang pagrekord</string>
+    <string name="recording_saved">Nai-save sa history</string>
 </resources>

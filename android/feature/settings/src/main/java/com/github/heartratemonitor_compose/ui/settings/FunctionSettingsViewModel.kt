@@ -33,7 +33,7 @@ class FunctionSettingsViewModel @Inject constructor(
             settings.settings.collect { s ->
                 setState {
                     it.copy(
-                        historyRecordingEnabled = s.historyRecordingEnabled,
+                        recordingMode = s.recordingMode,
                         heartbeatAnimationEnabled = s.heartbeatAnimationEnabled,
                         speedDisplayEnabled = s.speedDisplayEnabled,
                         hideFromRecentsEnabled = s.hideFromRecentsEnabled,
@@ -49,8 +49,8 @@ class FunctionSettingsViewModel @Inject constructor(
 
     override suspend fun handleIntent(intent: FunctionSettingsIntent) {
         when (intent) {
-            is FunctionSettingsIntent.SetHistoryRecording ->
-                settings.set(SettingsKeys.HISTORY_RECORDING_ENABLED, intent.enabled)
+            is FunctionSettingsIntent.SetRecordingMode ->
+                settings.set(SettingsKeys.RECORDING_MODE, intent.mode)
             is FunctionSettingsIntent.SetHeartbeatAnimation ->
                 settings.set(SettingsKeys.HEARTBEAT_ANIMATION_ENABLED, intent.enabled)
             is FunctionSettingsIntent.SetSpeedDisplay ->
@@ -71,7 +71,8 @@ class FunctionSettingsViewModel @Inject constructor(
 
 /** 功能设置页用户意图。 */
 sealed interface FunctionSettingsIntent {
-    data class SetHistoryRecording(val enabled: Boolean) : FunctionSettingsIntent
+    /** 设置历史记录模式（[RecordingMode].OFF / AUTO / MANUAL） */
+    data class SetRecordingMode(val mode: String) : FunctionSettingsIntent
     data class SetHeartbeatAnimation(val enabled: Boolean) : FunctionSettingsIntent
     data class SetSpeedDisplay(val enabled: Boolean) : FunctionSettingsIntent
     data class SetHideFromRecents(val enabled: Boolean) : FunctionSettingsIntent
@@ -83,7 +84,8 @@ sealed interface FunctionSettingsIntent {
 
 /** 功能设置页 UI 状态（只读快照）。 */
 data class FunctionSettingsUiState(
-    val historyRecordingEnabled: Boolean,
+    /** 历史记录模式（[RecordingMode].OFF / AUTO / MANUAL） */
+    val recordingMode: String,
     val heartbeatAnimationEnabled: Boolean,
     val speedDisplayEnabled: Boolean,
     val hideFromRecentsEnabled: Boolean,
@@ -99,7 +101,7 @@ data class FunctionSettingsUiState(
  * 回落 [AppSettings.DEFAULTS]（契约 10.3）。
  */
 internal fun initialFunctionSettingsUiState(settings: SettingsRepository): FunctionSettingsUiState = FunctionSettingsUiState(
-    historyRecordingEnabled = settings.get(SettingsKeys.HISTORY_RECORDING_ENABLED),
+    recordingMode = settings.recordingMode(),
     heartbeatAnimationEnabled = settings.get(SettingsKeys.HEARTBEAT_ANIMATION_ENABLED),
     speedDisplayEnabled = settings.get(SettingsKeys.SPEED_DISPLAY_ENABLED),
     hideFromRecentsEnabled = settings.get(SettingsKeys.HIDE_FROM_RECENTS_ENABLED),

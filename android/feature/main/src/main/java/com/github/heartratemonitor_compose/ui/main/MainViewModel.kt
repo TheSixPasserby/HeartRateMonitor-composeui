@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.github.heartratemonitor_compose.data.settings.AppSettings
+import com.github.heartratemonitor_compose.data.settings.RecordingMode
 import com.github.heartratemonitor_compose.data.settings.SettingsKeys
 import com.github.heartratemonitor_compose.ble.BleState
 import com.github.heartratemonitor_compose.data.repository.FavoriteDeviceRepository
@@ -95,10 +96,13 @@ class MainViewModel @Inject constructor(
     private val resolveSoundModeFallback: String = currentState.fullscreenSoundMode
 
     init {
-        // 历史记录开关：仅投影到 UI 状态，图表 reset/clear 联动已由服务层 BleSettingsListener 接管
+        // 记录模式：投影到 UI 状态（手动按钮可见性 / 图表开关）；
+        // 切 OFF 时的会话收尾与图表 reset/clear 联动已由服务层 BleSettingsListener 接管
         viewModelScope.launch {
-            settings.observe(SettingsKeys.HISTORY_RECORDING_ENABLED).drop(1).collect { enabled ->
-                setState { it.copy(isHistoryEnabled = enabled) }
+            settings.observe(SettingsKeys.RECORDING_MODE).drop(1).collect { mode ->
+                setState {
+                    it.copy(recordingMode = mode, isHistoryEnabled = mode != RecordingMode.OFF)
+                }
             }
         }
 
@@ -190,6 +194,8 @@ class MainViewModel @Inject constructor(
             MainIntent.MarkSearchTipShown -> settings.set(SettingsKeys.SEARCH_TIP_SHOWN, true)
             is MainIntent.SetHeartRateRingMax ->
                 settings.set(SettingsKeys.HEART_RATE_RING_MAX, intent.value)
+            MainIntent.StartRecording -> bleServiceRef?.get()?.startRecording()
+            MainIntent.StopRecording -> bleServiceRef?.get()?.stopRecording()
         }
     }
 

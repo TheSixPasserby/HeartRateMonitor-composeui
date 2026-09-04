@@ -1,5 +1,6 @@
 package com.github.heartratemonitor_compose.service
 
+import com.github.heartratemonitor_compose.data.settings.RecordingMode
 import com.github.heartratemonitor_compose.data.settings.SettingsKeys
 import com.github.heartratemonitor_compose.data.repository.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
@@ -40,12 +41,13 @@ class BleSettingsListener(
                     .collect { onSpeedSettingsChanged() }
             },
             scope.launch {
-                settingsRepository.observe(SettingsKeys.HISTORY_RECORDING_ENABLED)
+                settingsRepository.observe(SettingsKeys.RECORDING_MODE)
                     .drop(1)
-                    .collect { enabled ->
-                        // 关闭历史记录开关时，立即结束当前 session，
+                    .collect { mode ->
+                        // 切到「不记录」时立即结束当前 session，
                         // 避免 endTime 一直为 NULL 导致 UI 显示「进行中」直到下次启动。
-                        if (!enabled) {
+                        // AUTO ↔ MANUAL 切换不予响应：当前会话按既定节奏收尾即可
+                        if (mode == RecordingMode.OFF) {
                             onHistoryRecordingDisabled()
                             onChartCacheClear()
                         }

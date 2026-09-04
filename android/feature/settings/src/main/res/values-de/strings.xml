@@ -206,4 +206,10 @@
     
     Der Bluetooth-Herzfrequenzdienst (BleService) läuft als Vordergrunddienst kontinuierlich und wird nicht durch Speicherwarnungen unterbrochen. Der Statusleisten-Dienst und der Schwebefenster-Dienst können bei extremem Speicherdruck vom System zurückgeholt werden; die App stellt sich beim nächsten Start automatisch wieder her.</string>
     <string name="original_author">Originalautor</string>
+    <string name="record_mode_manual">Manuell</string>
+    <string name="record_mode_manual_desc">Über die Schaltfläche auf der Startseite starten und stoppen</string>
+    <string name="record_mode_auto">Automatisch</string>
+    <string name="record_mode_auto_desc">Aufzeichnung startet automatisch bei Geräteverbindung</string>
+    <string name="record_mode_off">Aus</string>
+    <string name="record_mode_off_desc">Verlaufsdaten werden nicht gespeichert</string>
 </resources>

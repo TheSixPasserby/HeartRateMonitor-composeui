@@ -206,4 +206,10 @@
     
     Ang Bluetooth rate ng puso na serbisyo (BleService) ay tumatakbo nang tuloy-tuloy bilang foreground service at hindi naaabala ng mga babala sa memorya. Ang serbisyo ng status bar at ang serbisyo ng lumulutang na window ay maaaring bawiin ng system sa ilalim ng matinding pressure ng memorya; awtomatikong makakabawi ang app sa susunod na pagbubukas.</string>
     <string name="original_author">Orihinal na may-akda</string>
+    <string name="record_mode_manual">Manu-manual</string>
+    <string name="record_mode_manual_desc">Simulan at itigil gamit ang button sa home page</string>
+    <string name="record_mode_auto">Awtomatik</string>
+    <string name="record_mode_auto_desc">Awtomatikong nagre-record kapag nakakonekta ang device</string>
+    <string name="record_mode_off">Naka-off</string>
+    <string name="record_mode_off_desc">Hindi nagse-save ng history data</string>
 </resources>

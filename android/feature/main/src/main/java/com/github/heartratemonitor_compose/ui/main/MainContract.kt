@@ -5,6 +5,7 @@ import com.github.heartratemonitor_compose.data.model.ChartDataSnapshot
 import com.github.heartratemonitor_compose.data.model.ScannedDevice
 import com.github.heartratemonitor_compose.data.repository.SettingsRepository
 import com.github.heartratemonitor_compose.data.settings.AppSettings
+import com.github.heartratemonitor_compose.data.settings.RecordingMode
 import com.github.heartratemonitor_compose.data.settings.SettingsKeys
 import com.github.heartratemonitor_compose.service.ConnectedDevice
 import com.github.heartratemonitor_compose.ui.util.resolveSoundMode
@@ -40,7 +41,13 @@ data class MainUiState(
     val chartDataSnapshot: ChartDataSnapshot? = null,
     val sessionMaxHr: Int = 0,
     val sessionMinHr: Int = 0,
-    val isHistoryEnabled: Boolean = AppSettings.defaultFor(SettingsKeys.HISTORY_RECORDING_ENABLED),
+    /** 记录模式下拉（OFF/AUTO/MANUAL），见 [RecordingMode] */
+    val recordingMode: String = AppSettings.defaultFor(SettingsKeys.RECORDING_MODE),
+    /** 记录模式 != OFF：图表统计与记录能力开关 */
+    val isHistoryEnabled: Boolean =
+        AppSettings.defaultFor(SettingsKeys.RECORDING_MODE) != RecordingMode.OFF,
+    /** 手动记录会话开始时间戳（epoch ms，null = 未在记录），驱动首页记录按钮/计时器 */
+    val recordingStartTime: Long? = null,
     val isSpeedEnabled: Boolean = AppSettings.defaultFor(SettingsKeys.SPEED_DISPLAY_ENABLED),
     val scanFilterEnabled: Boolean = AppSettings.defaultFor(SettingsKeys.SCAN_FILTER_ENABLED),
     val ringMaxHr: Int = AppSettings.defaultFor(SettingsKeys.HEART_RATE_RING_MAX),
@@ -88,6 +95,10 @@ sealed interface MainIntent {
     data class ToggleFavoriteDevice(val identifier: String, val name: String?) : MainIntent
     data object MarkSearchTipShown : MainIntent
     data class SetHeartRateRingMax(val value: Int) : MainIntent
+    /** 手动开始记录（首页播放按钮；仅 MANUAL 模式且已连接有效） */
+    data object StartRecording : MainIntent
+    /** 手动停止记录并保存（空会话直接丢弃） */
+    data object StopRecording : MainIntent
 }
 
 /**
@@ -101,7 +112,8 @@ internal fun initialMainUiState(settings: SettingsRepository, context: Context):
             com.github.heartratemonitor_compose.service.R.string.ble_idle
         ),
         favoriteDeviceId = s.favoriteDeviceId,
-        isHistoryEnabled = s.historyRecordingEnabled,
+        recordingMode = s.recordingMode,
+        isHistoryEnabled = s.recordingMode != RecordingMode.OFF,
         isSpeedEnabled = s.speedDisplayEnabled,
         scanFilterEnabled = s.scanFilterEnabled,
         ringMaxHr = s.heartRateRingMax,

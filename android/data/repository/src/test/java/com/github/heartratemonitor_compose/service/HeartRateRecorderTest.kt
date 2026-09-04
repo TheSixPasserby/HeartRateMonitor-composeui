@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.room3.Room
 import androidx.test.core.app.ApplicationProvider
 import com.github.heartratemonitor_compose.data.settings.SETTINGS_FILE_NAME
+import com.github.heartratemonitor_compose.data.settings.RecordingMode
 import com.github.heartratemonitor_compose.data.settings.SettingsKeys
 import com.github.heartratemonitor_compose.data.db.AppDatabase
 import com.github.heartratemonitor_compose.data.db.HeartRateDao
@@ -84,8 +85,12 @@ class HeartRateRecorderTest {
     )
 
     private fun enableHistory(enabled: Boolean) {
+        // 记录模式已取代旧布尔开关：true → AUTO（保留懒创建路径），false → OFF。
         // 经 Repository 写入：乐观缓存更新保证后续同步读立即生效，异步落盘 DataStore
-        settingsRepository.set(SettingsKeys.HISTORY_RECORDING_ENABLED, enabled)
+        settingsRepository.set(
+            SettingsKeys.RECORDING_MODE,
+            if (enabled) RecordingMode.AUTO else RecordingMode.OFF
+        )
     }
 
     // ── 历史记录关闭 ──

@@ -31,4 +31,7 @@
     <string name="reset">Réinitialiser</string>
     <string name="warm_tip_title">Avertissement</string>
     <string name="warm_tip_message">Veuillez activer la diffusion de la fréquence cardiaque sur votre appareil avant d\'appuyer sur Rechercher.</string>
+    <string name="start_recording">Démarrer l\'enregistrement</string>
+    <string name="stop_recording">Arrêter l\'enregistrement</string>
+    <string name="recording_saved">Enregistré dans l\'historique</string>
 </resources>

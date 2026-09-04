@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.ContainedLoadingIndicator
@@ -43,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -78,6 +80,7 @@ fun HomeScreen(
     onEnterFullScreen: () -> Unit,
     isActive: Boolean = true
 ) {
+    val context = LocalContext.current
     // 不在前台 Tab 时暂停高频状态订阅，避免二级页面转场期间后台 Home 页持续重组抢主线程
     val uiState = viewModel.uiState.collectWhenActive(isActive)
 
@@ -98,6 +101,8 @@ fun HomeScreen(
     val statusMessage by remember { derivedStateOf { uiState.value.statusMessage } }
     val chartDataSnapshot by remember { derivedStateOf { uiState.value.chartDataSnapshot } }
     val isHistoryEnabled by remember { derivedStateOf { uiState.value.isHistoryEnabled } }
+    val recordingMode by remember { derivedStateOf { uiState.value.recordingMode } }
+    val recordingStartTime by remember { derivedStateOf { uiState.value.recordingStartTime } }
     val ringMaxHr by remember { derivedStateOf { uiState.value.ringMaxHr } }
     val sessionMaxHr by remember { derivedStateOf { uiState.value.sessionMaxHr } }
     val sessionMinHr by remember { derivedStateOf { uiState.value.sessionMinHr } }
@@ -127,6 +132,22 @@ fun HomeScreen(
                     // TopAppBar actions 区域：speed/isSpeedEnabled/floatingWindowEnabled/isConnected
                     // 均为低频字段（speed 随 BLE 间歇更新，其余只在设置变更时变）。
                     // derivedStateOf 保证这些值不变时 actions lambda 不重组。
+                    // 手动记录控件（仅 MANUAL 模式渲染内部内容）：播放开始 → 红色胶囊计时 → 停止保存
+                    RecordControl(
+                        recordingMode = recordingMode,
+                        isConnected = isConnected,
+                        recordingStartTime = recordingStartTime,
+                        onStart = { viewModel.dispatch(MainIntent.StartRecording) },
+                        onStop = {
+                            viewModel.dispatch(MainIntent.StopRecording)
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.recording_saved),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    )
+                    Spacer(Modifier.width(4.dp))
                     SpeedPill(
                         speed = speed,
                         isActive = isSpeedEnabled && isConnected

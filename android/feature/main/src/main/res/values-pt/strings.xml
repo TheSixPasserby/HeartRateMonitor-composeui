@@ -31,4 +31,7 @@
     <string name="reset">Redefinir</string>
     <string name="warm_tip_title">Aviso</string>
     <string name="warm_tip_message">Ative a função de transmissão de frequência cardíaca no dispositivo antes de tocar em Pesquisar.</string>
+    <string name="start_recording">Iniciar gravação</string>
+    <string name="stop_recording">Parar gravação</string>
+    <string name="recording_saved">Guardado no histórico</string>
 </resources>

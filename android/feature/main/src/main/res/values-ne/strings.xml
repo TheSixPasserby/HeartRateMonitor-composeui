@@ -31,4 +31,7 @@
     <string name="reset">रिसेट</string>
     <string name="warm_tip_title">सुझाव</string>
     <string name="warm_tip_message">खोजी थिच्नु अघि आफ्नो यन्त्रमा हृदय गति प्रसारण सुविधा सक्रिय गर्नुहोस्।</string>
+    <string name="start_recording">रेकर्डिङ सुरु गर्नुहोस्</string>
+    <string name="stop_recording">रेकर्डिङ रोक्नुहोस्</string>
+    <string name="recording_saved">इतिहासमा सेभ भयो</string>
 </resources>

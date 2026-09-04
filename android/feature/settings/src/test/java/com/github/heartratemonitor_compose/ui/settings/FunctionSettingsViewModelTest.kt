@@ -84,7 +84,8 @@ class FunctionSettingsViewModelTest {
 
         assertThat(viewModel.uiState.value).isEqualTo(
             FunctionSettingsUiState(
-                historyRecordingEnabled = false,
+                // 记录模式默认手动（MANUAL，取代旧布尔开关）
+                recordingMode = "manual",
                 heartbeatAnimationEnabled = true,
                 speedDisplayEnabled = false,
                 hideFromRecentsEnabled = false,
@@ -99,26 +100,26 @@ class FunctionSettingsViewModelTest {
     }
 
     @Test
-    fun `history recording toggle writes and flows back`() = runTest {
+    fun `recording mode writes and flows back`() = runTest {
         Dispatchers.setMain(StandardTestDispatcher(testScheduler))
         val viewModel = createViewModel()
         runCurrent()
-    
-        // 对应"确认弹窗后开启"路径：确认后 dispatch SetHistoryRecording(true)
-        viewModel.dispatch(FunctionSettingsIntent.SetHistoryRecording(true))
-        awaitUiState(
-            viewModel,
-            mapOf(Pair(SettingsKeys.HISTORY_RECORDING_ENABLED, true))
-        ) { it.historyRecordingEnabled }
-        assertThat(settings.get(SettingsKeys.HISTORY_RECORDING_ENABLED)).isTrue()
 
-        // 关闭无需确认，直接 dispatch false
-        viewModel.dispatch(FunctionSettingsIntent.SetHistoryRecording(false))
+        // 对应「选择 AUTO 并确认性能警告」路径
+        viewModel.dispatch(FunctionSettingsIntent.SetRecordingMode("auto"))
         awaitUiState(
             viewModel,
-            mapOf(Pair(SettingsKeys.HISTORY_RECORDING_ENABLED, false))
-        ) { !it.historyRecordingEnabled }
-        assertThat(settings.get(SettingsKeys.HISTORY_RECORDING_ENABLED)).isFalse()
+            mapOf(Pair(SettingsKeys.RECORDING_MODE, "auto"))
+        ) { it.recordingMode == "auto" }
+        assertThat(settings.get(SettingsKeys.RECORDING_MODE)).isEqualTo("auto")
+
+        // 关闭无需确认，直接 dispatch OFF
+        viewModel.dispatch(FunctionSettingsIntent.SetRecordingMode("off"))
+        awaitUiState(
+            viewModel,
+            mapOf(Pair(SettingsKeys.RECORDING_MODE, "off"))
+        ) { it.recordingMode == "off" }
+        assertThat(settings.get(SettingsKeys.RECORDING_MODE)).isEqualTo("off")
     }
 
     @Test

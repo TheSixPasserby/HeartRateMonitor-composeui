@@ -206,4 +206,10 @@
     
     ब्लुटुथ मुटुको धड्कन सेवा (BleService) फोरग्राउन्ड सेवाको रूपमा निरन्तर चल्छ र मेमोरी चेतावनीले अवरोध गर्दैन। स्टेटस बार सेवा र फ्लोटिङ विन्डो सेवा चरम मेमोरी दबाबमा सिस्टमले पुन:प्राप्त गर्न सक्छ; एप अर्को पटक खोल्दा स्वचालित रूपमा पुन:प्राप्त हुनेछ।</string>
     <string name="original_author">मूल लेखक</string>
+    <string name="record_mode_manual">म्यानुअल</string>
+    <string name="record_mode_manual_desc">गृह पृष्ठको बटनबाट सुरु र रोक्नुहोस्</string>
+    <string name="record_mode_auto">स्वचालित</string>
+    <string name="record_mode_auto_desc">उपकरण जडान हुँदा स्वतः रेकर्ड गर्छ</string>
+    <string name="record_mode_off">बन्द</string>
+    <string name="record_mode_off_desc">इतिहास डेटा सेभ गरिँदैन</string>
 </resources>

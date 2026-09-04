@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.github.heartratemonitor_compose.data.settings.AppSettings
+import com.github.heartratemonitor_compose.data.settings.RecordingMode
 import com.github.heartratemonitor_compose.data.settings.SettingsKeys
 import com.github.heartratemonitor_compose.data.settings.settingsDataStore
 import kotlinx.coroutines.CancellationException
@@ -149,6 +150,22 @@ class SettingsRepository(context: Context, private val scope: CoroutineScope) {
             }
         }
     }
+
+    /**
+     * 历史记录模式统一读取（读预热内存快照，同步零 IO）。
+     *
+     * 含旧布尔开关自动迁移：mode 键缺失时，旧 `history_recording_enabled=true`
+     * 映射为 [RecordingMode.AUTO]（保留旧「连接即记录」行为），否则回退新默认
+     * [RecordingMode.MANUAL]；不再回写旧键。业务禁止使用旧布尔键。
+     */
+    fun recordingMode(): String {
+        return getNullable(SettingsKeys.RECORDING_MODE)
+            ?: if (get(SettingsKeys.HISTORY_RECORDING_ENABLED)) RecordingMode.AUTO
+               else RecordingMode.MANUAL
+    }
+
+    /** 记录是否启用（模式 != OFF；图表统计与其共用此开关语义）。 */
+    fun recordingEnabled(): Boolean = recordingMode() != RecordingMode.OFF
 
     companion object {
         private const val TAG = "SettingsRepository"

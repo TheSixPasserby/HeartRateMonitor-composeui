@@ -31,4 +31,7 @@
     <string name="reset">Zurücksetzen</string>
     <string name="warm_tip_title">Hinweis</string>
     <string name="warm_tip_message">Bitte aktivieren Sie vor dem Tippen auf Suchen die Herzfrequenz-Broadcast-Funktion auf Ihrem Gerät.</string>
+    <string name="start_recording">Aufzeichnung starten</string>
+    <string name="stop_recording">Aufzeichnung stoppen</string>
+    <string name="recording_saved">Im Verlauf gespeichert</string>
 </resources>

@@ -206,4 +206,10 @@
     
     Bluetooth kalp atış hızı hizmeti (BleService) ön plan hizmeti olarak sürekli çalışır ve bellek uyarılarından etkilenmez. Durum çubuğu hizmeti ve yüzen pencere hizmeti aşırı bellek baskısı altında sistem tarafından geri alınabilir; uygulama bir sonraki açılışta otomatik olarak kendini toparlar.</string>
     <string name="original_author">Orijinal yazar</string>
+    <string name="record_mode_manual">Elle</string>
+    <string name="record_mode_manual_desc">Ana sayfadaki düğmeyle başlatıp durdurun</string>
+    <string name="record_mode_auto">Otomatik</string>
+    <string name="record_mode_auto_desc">Cihaz bağlandığında otomatik kaydeder</string>
+    <string name="record_mode_off">Kapalı</string>
+    <string name="record_mode_off_desc">Geçmiş verileri kaydedilmez</string>
 </resources>

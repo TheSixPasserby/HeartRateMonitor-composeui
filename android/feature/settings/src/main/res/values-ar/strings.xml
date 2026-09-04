@@ -206,4 +206,10 @@
     
     تعمل خدمة معدل ضربات القلب عبر البلوتوث (BleService) كخدمة مقدمة باستمرار ولا تنقطع بسبب تحذيرات الذاكرة. قد يتم استعادة خدمة شريط الحالة وخدمة النافذة العائمة بواسطة النظام عند ضغط الذاكرة الشديد؛ سيتم استعادة التطبيق تلقائيًا عند التشغيل التالي.</string>
     <string name="original_author">المؤلف الأصلي</string>
+    <string name="record_mode_manual">يدوي</string>
+    <string name="record_mode_manual_desc">ابدأ وأوقف من زر الصفحة الرئيسية</string>
+    <string name="record_mode_auto">تلقائي</string>
+    <string name="record_mode_auto_desc">يسجل تلقائيًا عند اتصال الجهاز</string>
+    <string name="record_mode_off">إيقاف</string>
+    <string name="record_mode_off_desc">لا يتم حفظ بيانات السجل</string>
 </resources>

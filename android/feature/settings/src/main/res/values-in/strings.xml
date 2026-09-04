@@ -206,4 +206,10 @@
     
     Layanan detak jantung Bluetooth (BleService) berjalan terus-menerus sebagai layanan latar depan dan tidak terganggu oleh peringatan memori. Layanan bilah status dan layanan jendela mengambang dapat dipulihkan oleh sistem saat tekanan memori ekstrem; aplikasi akan pulih otomatis pada pembukaan berikutnya.</string>
     <string name="original_author">Penulis asli</string>
+    <string name="record_mode_manual">Manual</string>
+    <string name="record_mode_manual_desc">Mulai dan berhenti lewat tombol di halaman utama</string>
+    <string name="record_mode_auto">Otomatis</string>
+    <string name="record_mode_auto_desc">Merekam otomatis saat perangkat terhubung</string>
+    <string name="record_mode_off">Mati</string>
+    <string name="record_mode_off_desc">Tidak menyimpan data riwayat</string>
 </resources>

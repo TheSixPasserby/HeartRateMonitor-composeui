@@ -14,6 +14,7 @@ import com.github.heartratemonitor_compose.ble.BleState
 import com.github.heartratemonitor_compose.ble.HeartRateMeasurement
 import com.github.heartratemonitor_compose.data.model.ChartDataSnapshot
 import com.github.heartratemonitor_compose.data.model.ScannedDevice
+import com.github.heartratemonitor_compose.data.settings.RecordingMode
 import com.github.heartratemonitor_compose.data.settings.SettingsKeys
 import com.github.heartratemonitor_compose.data.WebhookTrigger
 import com.github.heartratemonitor_compose.data.repository.SettingsRepository
@@ -236,6 +237,7 @@ class BleConnectionHandler(
                     return@withContext
                 }
                 heartRateRecorder.endSession()
+                repository.setRecordingStartTime(null)
                 repository.setBleState(BleState.BluetoothDisabled)
                 webhookRepository.triggerWebhooks(
                     WebhookTrigger.DISCONNECTED,
@@ -541,9 +543,13 @@ class BleConnectionHandler(
                 autoReconnectAttempt = 0  // 连接成功，重置重试计数
                 webhookRepository.triggerWebhooks(WebhookTrigger.CONNECTED, speed = repository.speed.value)
 
+                // 仅 AUTO 模式在连接成功时自动开启记录会话（沿用旧「连接即记录」行为）；
+                // MANUAL 由用户显式 startRecording() 驱动；OFF 不落盘。
                 // 先确保 session 写入完成（await），再启动心率监听，避免早期数据因 session 未就绪而丢失
-                heartRateRecorder.startSession(deviceName)
-                // 新会话开始：重置图表缓存与极值，与 startSession 同位置
+                if (settingsRepository.recordingMode() == RecordingMode.AUTO) {
+                    heartRateRecorder.startSession(deviceName)
+                }
+                // 新会话开始：重置图表缓存与极值（图表随连接生灭，与记录模式无关）
                 repository.resetChartSession()
                 broadcast()
 
@@ -561,6 +567,36 @@ class BleConnectionHandler(
         isManuallyDisconnected = true
         isBluetoothTurningOff = false
         stopAllBleActivities()
+    }
+
+    /**
+     * 手动开始记录（控制面，配合 [BleConnectionManager.startRecording]）。
+     * 仅在已连接且记录开关非 OFF 时生效；重复调用幂等。
+     * 无连接时静默忽略——首页按钮本就仅在已连接时可点。
+     */
+    override fun startRecording() {
+        if (repository.recordingStartTime.value != null) return
+        if (!isDeviceConnected()) return
+        scope.launch {
+            val name = repository.connectedDevice.value?.name ?: lastConnectedDeviceName
+            val sessionId = heartRateRecorder.startSession(name)
+            // startSession 返回 null = 记录处于 OFF 模式，不落计时状态
+            repository.setRecordingStartTime(
+                if (sessionId != null) System.currentTimeMillis() else null
+            )
+        }
+    }
+
+    /**
+     * 手动停止记录并保存；无任何记录的会话被丢弃（不产生空历史项）。
+     * 未在记录时为空操作。
+     */
+    override fun stopRecording() {
+        if (repository.recordingStartTime.value == null) return
+        scope.launch {
+            heartRateRecorder.endSessionDiscardIfEmpty()
+            repository.setRecordingStartTime(null)
+        }
     }
 
     private fun stopAllBleActivities() {
@@ -598,6 +634,8 @@ class BleConnectionHandler(
         }
 
         heartRateRecorder.endSession()
+        // 断开连接即结束手动记录计时状态（断开后无数据可记，重连需用户重新开始）
+        repository.setRecordingStartTime(null)
         // 断开连接：清零极值 + 清空图表缓存，与 endSession 同位置
         repository.resetChartExtremes()
         repository.clearChart()

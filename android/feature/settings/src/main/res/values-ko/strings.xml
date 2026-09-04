@@ -206,4 +206,10 @@
     
     블루투스 심박수 서비스(BleService)는 포그라운드 서비스로 계속 실행되며 메모리 경고로 중단되지 않습니다. 상태 표시줄 상주 서비스와 플로팅 창 서비스는 메모리가 극도로 부족할 때 시스템에 의해 회수될 수 있으며, 앱은 다음 실행 시 자동으로 복구됩니다.</string>
     <string name="original_author">원작자</string>
+    <string name="record_mode_manual">수동</string>
+    <string name="record_mode_manual_desc">홈 화면 버튼으로 기록을 시작하고 중지합니다</string>
+    <string name="record_mode_auto">자동</string>
+    <string name="record_mode_auto_desc">기기 연결 시 자동으로 기록을 시작합니다</string>
+    <string name="record_mode_off">끄기</string>
+    <string name="record_mode_off_desc">기록 데이터를 저장하지 않습니다</string>
 </resources>

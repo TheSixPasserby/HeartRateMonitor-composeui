@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -26,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -48,6 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.heartratemonitor_compose.data.settings.RecordingMode
 import com.github.heartratemonitor_compose.feature.settings.R
 import com.github.heartratemonitor_compose.ui.util.SheetTopShape
 import com.github.heartratemonitor_compose.ui.util.StatusBarScrim
@@ -121,8 +124,8 @@ fun FunctionSettingsScreen(
             // ── 分组 1：显示与记录 ──
             DisplayAndRecordGroup(
                 uiState = uiState,
-                onHistoryRecordingChange = {
-                    viewModel.dispatch(FunctionSettingsIntent.SetHistoryRecording(it))
+                onRecordModeChange = {
+                    viewModel.dispatch(FunctionSettingsIntent.SetRecordingMode(it))
                 },
                 onHeartbeatAnimationChange = {
                     viewModel.dispatch(FunctionSettingsIntent.SetHeartbeatAnimation(it))
@@ -168,29 +171,23 @@ fun FunctionSettingsScreen(
 @Composable
 private fun DisplayAndRecordGroup(
     uiState: FunctionSettingsUiState,
-    onHistoryRecordingChange: (Boolean) -> Unit,
+    onRecordModeChange: (String) -> Unit,
     onHeartbeatAnimationChange: (Boolean) -> Unit,
     onSpeedDisplayChange: (Boolean) -> Unit
 ) {
-    val showWarningDialog = remember { mutableStateOf(false) }
+    var showModePicker by remember { mutableStateOf(false) }
+    // 待确认的启用型模式：手动/自动涉及持续落盘，需经性能警告确认
+    var pendingRecordMode by remember { mutableStateOf<String?>(null) }
     val showSpeedDialog = remember { mutableStateOf(false) }
 
     val containerColor = MaterialTheme.colorScheme.primaryContainer
     val iconTint = MaterialTheme.colorScheme.onPrimaryContainer
 
     SettingsGroupCard {
-        SettingsItem(isFirst = true) {
-            SettingsSwitch(
-                checked = uiState.historyRecordingEnabled,
-                onCheckedChange = { checked ->
-                    if (checked) {
-                        showWarningDialog.value = true
-                    } else {
-                        onHistoryRecordingChange(false)
-                    }
-                },
+        SettingsItem(isFirst = true, onClick = { showModePicker = true }) {
+            SettingsLink(
                 title = stringResource(R.string.record_history),
-                subtitle = stringResource(R.string.subtitle_record_history),
+                subtitle = stringResource(recordModeLabel(uiState.recordingMode)),
                 leadingIcon = painterResource(R.drawable.ic_deployed_code_history),
                 leadingIconContainerColor = containerColor,
                 leadingIconTint = iconTint
@@ -228,11 +225,16 @@ private fun DisplayAndRecordGroup(
         }
     }
 
-    if (showWarningDialog.value) {
+    // 记录模式选择器（单 BottomSheet，内容在「三档列表 ↔ 性能警告确认」间切换，
+    // 避免两个 sheet 叠加）：OFF 立即生效；MANUAL/AUTO 进入警告页签，确认后写入
+    if (showModePicker) {
         val sheetState = rememberExpandedSheetState()
-        val dismiss = rememberSheetDismissHandler(sheetState) { showWarningDialog.value = false }
+        val dismiss = rememberSheetDismissHandler(sheetState) {
+            showModePicker = false
+            pendingRecordMode = null // 关闭即放弃待确认模式，重进回到列表
+        }
         ModalBottomSheet(
-            onDismissRequest = { showWarningDialog.value = false },
+            onDismissRequest = { showModePicker = false; pendingRecordMode = null },
             sheetState = sheetState,
             shape = SheetTopShape
         ) {
@@ -243,32 +245,62 @@ private fun DisplayAndRecordGroup(
                     .windowInsetsPadding(WindowInsets.navigationBars)
                     .padding(bottom = 16.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.performance_warning),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
-                Text(
-                    text = stringResource(R.string.history_warning_message),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    ExpressiveTextButton(
-                        label = stringResource(com.github.heartratemonitor_compose.ui.widgets.R.string.cancel),
-                        onClick = dismiss
+                val pending = pendingRecordMode
+                if (pending == null) {
+                    Text(
+                        text = stringResource(R.string.record_history),
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(bottom = 12.dp)
                     )
-                    Spacer(Modifier.width(8.dp))
-                    ExpressiveButton(
-                        label = stringResource(com.github.heartratemonitor_compose.ui.widgets.R.string.confirm),
-                        onClick = {
-                            onHistoryRecordingChange(true)
+                    RecordModeRow(
+                        title = stringResource(R.string.record_mode_manual),
+                        description = stringResource(R.string.record_mode_manual_desc),
+                        selected = uiState.recordingMode == RecordingMode.MANUAL,
+                        onSelect = { pendingRecordMode = RecordingMode.MANUAL }
+                    )
+                    RecordModeRow(
+                        title = stringResource(R.string.record_mode_auto),
+                        description = stringResource(R.string.record_mode_auto_desc),
+                        selected = uiState.recordingMode == RecordingMode.AUTO,
+                        onSelect = { pendingRecordMode = RecordingMode.AUTO }
+                    )
+                    RecordModeRow(
+                        title = stringResource(R.string.record_mode_off),
+                        description = stringResource(R.string.record_mode_off_desc),
+                        selected = uiState.recordingMode == RecordingMode.OFF,
+                        onSelect = {
+                            onRecordModeChange(RecordingMode.OFF)
                             dismiss()
                         }
                     )
+                } else {
+                    Text(
+                        text = stringResource(R.string.performance_warning),
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+                    Text(
+                        text = stringResource(R.string.history_warning_message),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        ExpressiveTextButton(
+                            label = stringResource(com.github.heartratemonitor_compose.ui.widgets.R.string.cancel),
+                            onClick = { pendingRecordMode = null } // 返回三档列表
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        ExpressiveButton(
+                            label = stringResource(com.github.heartratemonitor_compose.ui.widgets.R.string.confirm),
+                            onClick = {
+                                onRecordModeChange(pending)
+                                dismiss()
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -395,4 +427,39 @@ private fun ConnectionAndBackgroundGroup(
             )
         }
     }
+}
+
+/** 记录模式单选行（三档选择器子项）。 */
+@Composable
+private fun RecordModeRow(
+    title: String,
+    description: String,
+    selected: Boolean,
+    onSelect: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onSelect)
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(selected = selected, onClick = onSelect)
+        Spacer(Modifier.width(8.dp))
+        Column {
+            Text(text = title, style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+/** 记录模式下拉副标题：显示当前档位名。 */
+private fun recordModeLabel(mode: String): Int = when (mode) {
+    RecordingMode.AUTO -> R.string.record_mode_auto
+    RecordingMode.OFF -> R.string.record_mode_off
+    else -> R.string.record_mode_manual
 }

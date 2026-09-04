@@ -275,7 +275,8 @@ class SettingsRepositoryTest {
     @Test
     fun `settings snapshot resolves defaults when keys absent`() {
         val snapshot = repo.settings.value
-        assertThat(snapshot.historyRecordingEnabled).isFalse()
+        // 记录模式默认手动（MANUAL，新增「首页手动开始/停止」入口）
+        assertThat(snapshot.recordingMode).isEqualTo("manual")
         assertThat(snapshot.heartbeatAnimationEnabled).isTrue()
         assertThat(snapshot.httpServerPort).isEqualTo(8000)
         assertThat(snapshot.websocketServerPort).isEqualTo(8001)
@@ -291,7 +292,8 @@ class SettingsRepositoryTest {
     // ── 实际 SettingsKeys 验证 ──
 
     @Test
-    fun `real settings key - history recording enabled`() {
+    fun `real settings key - history legacy bool round trip`() {
+        // 旧布尔键仍可直读写（类型化键回归保护）；业务行为已切换至 RECORDING_MODE
         repo.set(SettingsKeys.HISTORY_RECORDING_ENABLED, true)
         assertThat(repo.get(SettingsKeys.HISTORY_RECORDING_ENABLED)).isTrue()
     }
