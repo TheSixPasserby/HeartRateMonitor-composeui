@@ -84,6 +84,8 @@ class BleService : Service(), FairMemoryReceiver.MemoryListener, BleConnectionMa
         connectionHandler.startAutoConnectScan(favoriteDeviceId, durationMillis)
     override fun connectToDevice(identifier: String) = connectionHandler.connectToDevice(identifier)
     override fun disconnectDevice() = connectionHandler.disconnectDevice()
+    override fun startRecording() = connectionHandler.startRecording()
+    override fun stopRecording() = connectionHandler.stopRecording()
 
     override fun onCreate() {
         super.onCreate()
