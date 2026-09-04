@@ -24,4 +24,11 @@
     <string name="heart_rate_chart_title">Grafik Detak Jantung</string>
     <string name="avg_stats_title">Statistik Rata-rata</string>
     <string name="max_records_hint">Maksimal 30 catatan</string>
+    <string name="export_csv">Ekspor CSV</string>
+    <string name="exported_csv">CSV diekspor</string>
+    <string name="exported_csv_files">%1$s file CSV diekspor</string>
+    <string name="export_failed">Gagal mengekspor: %1$s</string>
+    <string name="export_no_data">Tidak ada data untuk diekspor</string>
+    <string name="test_data_generated">Data uji dibuat</string>
+    <string name="test_data_failed">Gagal membuat data uji: %1$s</string>
 </resources>

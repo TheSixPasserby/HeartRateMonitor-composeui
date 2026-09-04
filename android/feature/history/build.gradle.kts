@@ -31,6 +31,8 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":data:repository"))
     implementation(project(":service"))
+    // rememberLauncherForActivityResult：SAF 导出（CreateDocument / OpenDocumentTree）
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.compose.foundation)

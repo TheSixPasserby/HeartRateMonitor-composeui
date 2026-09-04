@@ -35,6 +35,9 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    // SAF 目录写入：历史记录批量导出 CSV（HistoryCsvExporter）
+    implementation(libs.androidx.documentfile)
+
     // kotlinx-serialization：WebhookRepository.sendRequest 解析用户输入的 headers JSON
     implementation(libs.kotlinx.serialization.json)
 

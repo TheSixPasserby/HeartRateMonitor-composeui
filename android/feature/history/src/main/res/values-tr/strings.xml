@@ -24,4 +24,11 @@
     <string name="heart_rate_chart_title">Nabız Grafiği</string>
     <string name="avg_stats_title">Ortalama İstatistik</string>
     <string name="max_records_hint">En fazla 30 kayıt</string>
+    <string name="export_csv">CSV dışa aktar</string>
+    <string name="exported_csv">CSV dışa aktarıldı</string>
+    <string name="exported_csv_files">%1$s CSV dosyası dışa aktarıldı</string>
+    <string name="export_failed">Dışa aktarma başarısız: %1$s</string>
+    <string name="export_no_data">Dışa aktarılacak veri yok</string>
+    <string name="test_data_generated">Test verileri oluşturuldu</string>
+    <string name="test_data_failed">Test verileri oluşturulamadı: %1$s</string>
 </resources>

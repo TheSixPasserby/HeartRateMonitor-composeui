@@ -1,6 +1,9 @@
 package com.github.heartratemonitor_compose.ui.history
 
 import android.content.pm.ActivityInfo
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -78,6 +81,37 @@ fun ChartScreen(
     var startTime by remember { mutableStateOf(0L) }
     val timeFormat = remember { SimpleDateFormat("HH:mm:ss", Locale.US) }
 
+    // SAF 创建文档：导出当前会话为 CSV
+    val exportLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("text/csv")
+    ) { uri ->
+        if (uri != null) viewModel.dispatch(ChartIntent.ExportCsv(uri))
+    }
+
+    // 导出结果一次性回调：Toast 文案在 UI 侧映射（VM 无 Context）
+    DisposableEffect(viewModel) {
+        viewModel.exportResultListener = { result ->
+            when (result) {
+                is ChartExportResult.Exported -> Toast.makeText(
+                    context,
+                    context.getString(R.string.exported_csv),
+                    Toast.LENGTH_SHORT
+                ).show()
+                is ChartExportResult.NoData -> Toast.makeText(
+                    context,
+                    context.getString(R.string.export_no_data),
+                    Toast.LENGTH_SHORT
+                ).show()
+                is ChartExportResult.Failed -> Toast.makeText(
+                    context,
+                    context.getString(R.string.export_failed, result.reason),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+        onDispose { viewModel.exportResultListener = null }
+    }
+
     LaunchedEffect(sessionId) {
         viewModel.dispatch(ChartIntent.LoadRecords(sessionId))
     }
@@ -135,6 +169,22 @@ fun ChartScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = {
+                        exportLauncher.launch(uiState.exportFileName ?: "heart_rate.csv")
+                    }) {
+                        Surface(
+                            modifier = Modifier.size(40.dp),
+                            shape = CircleShape,
+                            color = MaterialTheme.colorScheme.surfaceBright
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_export),
+                                    contentDescription = stringResource(R.string.export_csv)
+                                )
+                            }
+                        }
+                    }
                     IconButton(onClick = {
                         val activity = context.findActivity() ?: return@IconButton
                         activity.requestedOrientation =

@@ -1,5 +1,7 @@
 package com.github.heartratemonitor_compose.ui.history
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -73,7 +75,7 @@ fun HistoryScreen(
     val isMultiSelectMode = uiState.isMultiSelectMode
     val selectedIds = uiState.selectedIds
 
-    // 删除结果一次性回调：Toast 文案需在 UI 侧映射（VM 无 Context）
+    // 删除/导出结果一次性回调：Toast 文案需在 UI 侧映射（VM 无 Context）
     DisposableEffect(viewModel) {
         viewModel.deleteResultListener = { result ->
             when (result) {
@@ -89,10 +91,54 @@ fun HistoryScreen(
                 ).show()
             }
         }
-        onDispose { viewModel.deleteResultListener = null }
+        viewModel.exportResultListener = { result ->
+            when (result) {
+                is HistoryExportResult.Exported -> Toast.makeText(
+                    context,
+                    context.getString(R.string.exported_csv_files, result.count.toString()),
+                    Toast.LENGTH_SHORT
+                ).show()
+                is HistoryExportResult.NoData -> Toast.makeText(
+                    context,
+                    context.getString(R.string.export_no_data),
+                    Toast.LENGTH_SHORT
+                ).show()
+                is HistoryExportResult.Failed -> Toast.makeText(
+                    context,
+                    context.getString(R.string.export_failed, result.reason),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+        viewModel.seedResultListener = { result ->
+            when (result) {
+                is HistorySeedResult.Done -> Toast.makeText(
+                    context,
+                    context.getString(R.string.test_data_generated),
+                    Toast.LENGTH_SHORT
+                ).show()
+                is HistorySeedResult.Failed -> Toast.makeText(
+                    context,
+                    context.getString(R.string.test_data_failed, result.reason),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+        onDispose {
+            viewModel.deleteResultListener = null
+            viewModel.exportResultListener = null
+            viewModel.seedResultListener = null
+        }
     }
 
     var showDeleteDialog by remember { mutableStateOf(false) }
+
+    // 多选批量导出：SAF 目录选择器，每个选中会话写出一个 CSV
+    val exportLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocumentTree()
+    ) { uri ->
+        if (uri != null) viewModel.dispatch(HistoryIntent.ExportSessionsCsv(uri))
+    }
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -116,10 +162,17 @@ fun HistoryScreen(
                 onSelectAll = {
                     viewModel.dispatch(HistoryIntent.SelectAll)
                 },
+                onTitleLongClick = {
+                    // 隐藏调试入口：长按「历史记录」标题生成测试数据（仅普通态）
+                    if (!isMultiSelectMode) viewModel.dispatch(HistoryIntent.SeedTestData)
+                },
                 onDelete = {
                     if (selectedIds.isNotEmpty()) {
                         showDeleteDialog = true
                     }
+                },
+                onExport = {
+                    if (selectedIds.isNotEmpty()) exportLauncher.launch(null)
                 },
                 scrollBehavior = scrollBehavior
             )
@@ -233,7 +286,7 @@ fun HistoryScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun HistoryTopBar(
     isMultiSelectMode: Boolean,
@@ -243,6 +296,8 @@ private fun HistoryTopBar(
     onNavigateBack: () -> Unit,
     onSelectAll: () -> Unit,
     onDelete: () -> Unit,
+    onExport: () -> Unit,
+    onTitleLongClick: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     TopAppBar(
@@ -255,7 +310,11 @@ private fun HistoryTopBar(
         title = {
             Text(
                 text = if (isMultiSelectMode) stringResource(R.string.selected_count, selectedCount.toString()) else stringResource(R.string.history_title),
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.combinedClickable(
+                    onClick = {},
+                    onLongClick = onTitleLongClick
+                )
             )
         },
         navigationIcon = {
@@ -304,6 +363,12 @@ private fun HistoryTopBar(
                             MaterialTheme.colorScheme.primary
                         else
                             MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                IconButton(onClick = onExport) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_export),
+                        contentDescription = stringResource(R.string.export_csv)
                     )
                 }
                 IconButton(onClick = onDelete) {

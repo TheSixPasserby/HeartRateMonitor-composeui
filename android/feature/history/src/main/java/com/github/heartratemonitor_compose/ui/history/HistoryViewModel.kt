@@ -1,7 +1,9 @@
 package com.github.heartratemonitor_compose.ui.history
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.github.heartratemonitor_compose.data.model.HeartRateSessionInfo
+import com.github.heartratemonitor_compose.data.repository.HistoryCsvExporter
 import com.github.heartratemonitor_compose.data.repository.HistoryRepository
 import com.github.heartratemonitor_compose.ui.mvi.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,6 +32,7 @@ import kotlinx.collections.immutable.toImmutableSet
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
     private val repository: HistoryRepository,
+    private val csvExporter: HistoryCsvExporter,
     private val fairMemoryReceiver: FairMemoryReceiver
 ) : MviViewModel<HistoryUiState, HistoryIntent>(HistoryUiState()),
     FairMemoryReceiver.MemoryListener {
@@ -44,6 +47,17 @@ class HistoryViewModel @Inject constructor(
      */
     @Volatile
     var deleteResultListener: ((HistoryDeleteResult) -> Unit)? = null
+
+    /**
+     * 导出结果一次性回调（同 deleteResultListener 语义：一次性事件不进 UiState，
+     * SAF 写入异常必须在 VM 内捕获，dispatch 即发即忘路径上未捕获异常会崩进程）。
+     */
+    @Volatile
+    var exportResultListener: ((HistoryExportResult) -> Unit)? = null
+
+    /** 测试数据生成结果一次性回调（隐藏调试入口，语义同 deleteResultListener）。 */
+    @Volatile
+    var seedResultListener: ((HistorySeedResult) -> Unit)? = null
 
     init {
         viewModelScope.launch {
@@ -75,6 +89,59 @@ class HistoryViewModel @Inject constructor(
             }
             HistoryIntent.SelectAll ->
                 setState { it.copy(selectedIds = currentState.sessions.map { s -> s.id }.toImmutableSet()) }
+            is HistoryIntent.ExportSessionsCsv -> exportSessionsCsv(intent.treeUri)
+            HistoryIntent.SeedTestData -> seedTestData()
+        }
+    }
+
+    /** 隐藏调试入口：写入一段模拟会话；列表由 allSessions Flow 自动回流刷新。 */
+    private suspend fun seedTestData() {
+        val result = try {
+            repository.insertDebugSession()
+            HistorySeedResult.Done
+        } catch (e: CancellationException) {
+            throw e // 取消必须重抛，禁止并入普通 Exception 分支吞掉（契约 6）
+        } catch (e: Exception) {
+            HistorySeedResult.Failed(e.message ?: e.javaClass.simpleName)
+        }
+        seedResultListener?.invoke(result)
+    }
+
+    /**
+     * 将选中会话逐个导出为 CSV 写入 SAF 目录（OpenDocumentTree 返回的 uri）。
+     * 无记录的会话跳过；串行写盘（选中数 ≤ 保留上限，逐文件 saf 写入即足够快）。
+     * 成功后退出多选（与删除一致的收尾语义）；失败保留选中便于重试。
+     */
+    private suspend fun exportSessionsCsv(treeUri: Uri) {
+        val selected = currentState.sessions.filter { it.id in currentState.selectedIds }
+        val exportedCount = try {
+            var count = 0
+            for (session in selected) {
+                val records = repository.getRecordsForSession(session.id)
+                if (records.isEmpty()) continue
+                if (csvExporter.exportToDirectory(
+                        treeUri,
+                        HistoryCsvExporter.suggestedFileName(session.startTime),
+                        records
+                    )
+                ) {
+                    count++
+                }
+            }
+            count
+        } catch (e: CancellationException) {
+            throw e // 取消必须重抛，禁止并入普通 Exception 分支吞掉（契约 6）
+        } catch (e: Exception) {
+            exportResultListener?.invoke(
+                HistoryExportResult.Failed(e.message ?: e.javaClass.simpleName)
+            )
+            return
+        }
+        if (exportedCount > 0) {
+            setState { it.copy(isMultiSelectMode = false, selectedIds = persistentSetOf()) }
+            exportResultListener?.invoke(HistoryExportResult.Exported(exportedCount))
+        } else {
+            exportResultListener?.invoke(HistoryExportResult.NoData)
         }
     }
 
@@ -205,6 +272,32 @@ sealed interface HistoryIntent {
 
     /** 全选当前会话列表。 */
     data object SelectAll : HistoryIntent
+
+    /** 将选中会话批量导出 CSV 到 SAF 目录（OpenDocumentTree 返回的 uri），每会话一个文件。 */
+    data class ExportSessionsCsv(val treeUri: Uri) : HistoryIntent
+
+    /** 生成一段模拟测试会话（隐藏入口：历史页标题长按）。 */
+    data object SeedTestData : HistoryIntent
+}
+
+/** 测试数据生成结果一次性事件（不进 UiState）。 */
+sealed interface HistorySeedResult {
+    data object Done : HistorySeedResult
+
+    data class Failed(val reason: String) : HistorySeedResult
+}
+
+/**
+ * 导出结果一次性事件（VM 无 Context，文案由 UI 侧映射，不进 UiState）。
+ */
+sealed interface HistoryExportResult {
+    /** 成功写出的 CSV 文件数 */
+    data class Exported(val count: Int) : HistoryExportResult
+
+    /** 选中会话全部无记录（或目录不可写），未导出任何文件 */
+    data object NoData : HistoryExportResult
+
+    data class Failed(val reason: String) : HistoryExportResult
 }
 
 /** 历史记录页 UI 状态（只读快照）。 */
