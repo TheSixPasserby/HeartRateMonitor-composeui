@@ -37,14 +37,13 @@ jobs:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
           mkdir -p .key
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "ERROR: KEYSTORE_BASE64 secret 未设置（fork 仓库不继承原仓库 Secrets，需在 Settings → Secrets and variables → Actions 补配 4 个密钥，取值见仓库 android/.key/ 下文件）" >&2
+            exit 1
+          fi
           printf '%s' "$KEYSTORE_BASE64" | base64 -d > .key/app-release.jks
           ls -l .key/app-release.jks
           file .key/app-release.jks
-
-      # 注意：单元测试不在此流水线执行——项目存在 28 个预存失败
-      #（:service HeartRateRecorderTest 11 + :data:database AppDatabaseTest 17，
-      #  根因测试环境 Room migration 3→4 缺失），执行 testDebugUnitTest 会使
-      #  Gradle 任务失败并阻塞发布；预存失败修复后再加入测试步骤。
 
       - name: Build release
         run: ./gradlew assembleRelease
