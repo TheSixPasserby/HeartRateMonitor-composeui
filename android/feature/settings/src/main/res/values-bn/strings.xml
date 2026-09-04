@@ -84,7 +84,7 @@
     <string name="unknown_version">অজানা</string>
     <string name="checking_update">চেক হচ্ছে...</string>
     <string name="check_update">আপডেট চেক করুন</string>
-    <string name="subtitle_check_update">Gitee থেকে সর্বশেষ সংস্করণ তথ্য পান</string>
+    <string name="subtitle_check_update">GitHub থেকে সর্বশেষ সংস্করণ তথ্য পান</string>
     <string name="open_source_license">ওপেন সোর্স লাইসেন্স</string>
     <string name="subtitle_open_source_license">MIT লাইসেন্স</string>
     <string name="license_title">ওপেন সোর্স লাইসেন্স</string>
@@ -205,4 +205,5 @@
     • মূল থ্রেড ব্লক হওয়া এড়াতে ব্রডকাস্ট প্রসেসিংয়ের জন্য ডেডিকেটেড HandlerThread ব্যবহার করুন
     
     ব্লুটুথ হৃদস্পন্দন সার্ভিস (BleService) ফোরগ্রাউন্ড সার্ভিস হিসেবে অবিরত চলে এবং মেমোরি সতর্কতায় বিঘ্নিত হয় না। স্ট্যাটাস বার সার্ভিস এবং ফ্লোটিং উইন্ডো সার্ভিস চরম মেমোরি চাপে সিস্টেম দ্বারা পুনরুদ্ধার হতে পারে; অ্যাপটি পরের বার খোলার সময় স্বয়ংক্রিয়ভাবে পুনরুদ্ধার হবে।</string>
+    <string name="original_author">মূল লেখক</string>
 </resources>

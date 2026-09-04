@@ -84,7 +84,7 @@
     <string name="unknown_version">Неизвестно</string>
     <string name="checking_update">Проверка...</string>
     <string name="check_update">Проверить обновления</string>
-    <string name="subtitle_check_update">Получить информацию о последней версии с Gitee</string>
+    <string name="subtitle_check_update">Получить информацию о последней версии с GitHub</string>
     <string name="open_source_license">Лицензия с открытым исходным кодом</string>
     <string name="subtitle_open_source_license">Лицензия MIT</string>
     <string name="license_title">Лицензия с открытым исходным кодом</string>
@@ -205,4 +205,5 @@
     • Использование отдельного HandlerThread для обработки трансляций во избежание блокировки главного потока
     
     Bluetooth-сервис пульса (BleService) работает как постоянный сервис и не прерывается предупреждениями о памяти. Сервис строки состояния и сервис плавающего окна могут быть освобождены системой при крайней нехватке памяти; приложение автоматически восстановится при следующем запуске.</string>
+    <string name="original_author">Оригинальный автор</string>
 </resources>

@@ -84,7 +84,7 @@
     <string name="unknown_version">ไม่ทราบ</string>
     <string name="checking_update">กำลังตรวจสอบ...</string>
     <string name="check_update">ตรวจสอบอัปเดต</string>
-    <string name="subtitle_check_update">รับข้อมูลเวอร์ชันล่าสุดจาก Gitee</string>
+    <string name="subtitle_check_update">รับข้อมูลเวอร์ชันล่าสุดจาก GitHub</string>
     <string name="open_source_license">สัญญาอนุญาตโอเพนซอร์ส</string>
     <string name="subtitle_open_source_license">สัญญาอนุญาต MIT</string>
     <string name="license_title">สัญญาอนุญาตโอเพนซอร์ส</string>
@@ -205,4 +205,5 @@
     • ใช้ HandlerThread เฉพาะในการประมวลผลการออกอากาศ เพื่อหลีกเลี่ยงการบล็อกเธรดหลัก
     
     บริการอัตราการเต้นของหัวใจบลูทูธ (BleService) ทำงานเป็นบริการเบื้องหน้าอย่างต่อเนื่องและไม่ถูกขัดจังหวะจากคำเตือนหน่วยความจำ บริการแถบสถานะและบริการหน้าต่างลอยอาจถูกเรียกคืนโดยระบบเมื่อหน่วยความจำตึงตัวมาก แอปจะกู้คืนโดยอัตโนมัติเมื่อเปิดครั้งถัดไป</string>
+    <string name="original_author">ผู้เขียนต้นฉบับ</string>
 </resources>

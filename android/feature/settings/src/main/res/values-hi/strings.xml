@@ -84,7 +84,7 @@
     <string name="unknown_version">अज्ञात</string>
     <string name="checking_update">जांच हो रही है...</string>
     <string name="check_update">अपडेट जांचें</string>
-    <string name="subtitle_check_update">Gitee से नवीनतम संस्करण जानकारी प्राप्त करें</string>
+    <string name="subtitle_check_update">GitHub से नवीनतम संस्करण जानकारी प्राप्त करें</string>
     <string name="open_source_license">ओपन सोर्स लाइसेंस</string>
     <string name="subtitle_open_source_license">MIT लाइसेंस</string>
     <string name="license_title">ओपन सोर्स लाइसेंस</string>
@@ -205,4 +205,5 @@
     • मुख्य थ्रेड को अवरुद्ध करने से बचने के लिए ब्रॉडकास्ट प्रोसेसिंग के लिए समर्पित HandlerThread का उपयोग करें
     
     ब्लूटूथ हृदय गति सेवा (BleService) फोरग्राउंड सेवा के रूप में निरंतर चलती है और मेमोरी चेतावनियों से बाधित नहीं होती। स्टेटस बार सेवा और फ्लोटिंग विंडो सेवा अत्यधिक मेमोरी दबाव में सिस्टम द्वारा वापस ली जा सकती हैं; ऐप अगली बार लॉन्च पर स्वचालित रूप से पुनर्स्थापित हो जाएगा।</string>
+    <string name="original_author">मूल लेखक</string>
 </resources>

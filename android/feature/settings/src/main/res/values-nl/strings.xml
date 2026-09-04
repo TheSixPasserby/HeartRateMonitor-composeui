@@ -84,7 +84,7 @@
     <string name="unknown_version">Onbekend</string>
     <string name="checking_update">Controleren...</string>
     <string name="check_update">Updates controleren</string>
-    <string name="subtitle_check_update">Informatie over de nieuwste versie ophalen van Gitee</string>
+    <string name="subtitle_check_update">Informatie over de nieuwste versie ophalen van GitHub</string>
     <string name="open_source_license">Open-source licentie</string>
     <string name="subtitle_open_source_license">MIT-licentie</string>
     <string name="license_title">Open-source licentie</string>
@@ -205,4 +205,5 @@
     • Gebruik van een toegewijde HandlerThread om uitzendingen te verwerken en het blokkeren van de hoofdthread te voorkomen
     
     De Bluetooth-hartslagservice (BleService) werkt continu als voorgrondservice en wordt niet onderbroken door geheugenwaarschuwingen. De statusbalkservice en de zwevend venster-service kunnen door het systeem worden teruggehaald bij extreme geheugendruk; de app herstelt automatisch bij de volgende opening.</string>
+    <string name="original_author">Oorspronkelijke auteur</string>
 </resources>

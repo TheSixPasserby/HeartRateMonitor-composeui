@@ -84,7 +84,7 @@
     <string name="unknown_version">不明</string>
     <string name="checking_update">確認中...</string>
     <string name="check_update">更新を確認</string>
-    <string name="subtitle_check_update">Giteeから最新バージョン情報を取得</string>
+    <string name="subtitle_check_update">GitHubから最新バージョン情報を取得</string>
     <string name="open_source_license">オープンソースライセンス</string>
     <string name="subtitle_open_source_license">MITライセンス</string>
     <string name="license_title">オープンソースライセンス</string>
@@ -205,4 +205,5 @@
     • 専用のHandlerThreadでブロードキャストを処理し、メインスレッドのブロックを回避
     
     ブルートゥース心拍数サービス（BleService）はフォアグラウンドサービスとして継続的に動作し、メモリ警告によって中断されることはありません。ステータスバー常駐サービスとフローティングウィンドウサービスは、メモリが極端に逼迫した場合にシステムによって回収される可能性がありますが、アプリは次回起動時に自動的に復元されます。</string>
+    <string name="original_author">原作者</string>
 </resources>

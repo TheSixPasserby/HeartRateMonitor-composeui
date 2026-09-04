@@ -176,8 +176,12 @@ fun AboutDetailsScreen(
                 }
             )
 
-            // 维护者卡片
-            MaintainerCard()
+            // 维护者卡片（本 fork 作者）+ 原作者鸣谢卡片（点击跳转上游原仓库）
+            ForkMaintainerCard()
+            OriginalAuthorCard(onClick = {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(ORIGINAL_REPO_URL))
+                onOpenExternal(intent)
+            })
 
             // 功能入口
             AboutActionGroup(
@@ -189,10 +193,7 @@ fun AboutDetailsScreen(
                     viewModel.dispatch(AboutDetailsIntent.CheckUpdate(currentVersion))
                 },
                 onOpenRepository = {
-                    val intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://github.com/XiaochangXu/HeartRateMonitor-composeui")
-                    )
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(REPO_URL))
                     // 外部启动抑制标志由 MainActivity.onOpenExternal 统一置位，此处不再重复
                     onOpenExternal(intent)
                 },

@@ -84,7 +84,7 @@
     <string name="unknown_version">Unknown</string>
     <string name="checking_update">Checking...</string>
     <string name="check_update">Check for Updates</string>
-    <string name="subtitle_check_update">Get latest version info from Gitee</string>
+    <string name="subtitle_check_update">Get latest version info from GitHub</string>
     <string name="open_source_license">Open Source License</string>
     <string name="subtitle_open_source_license">MIT License</string>
     <string name="license_title">Open Source License</string>
@@ -205,5 +205,6 @@
     • Use dedicated HandlerThread for broadcast processing to avoid blocking main thread
     
     BLE heart rate service (BleService) runs as a foreground service and won\'t be interrupted by memory warnings. Status bar resident service and floating window service may be reclaimed by the system under extreme memory pressure; the app will auto-recover on next launch.</string>
+    <string name="original_author">Original Author</string>
 </resources>
 

@@ -450,8 +450,11 @@
   <data name="VersionInfo_CheckUpdateButton.Text" xml:space="preserve">
     <value>Check for updates</value>
   </data>
-  <data name="VersionInfo_CheckUpdateHint.Text" xml:space="preserve">
-    <value>Get latest version info from Gitee</value>
+   <data name="VersionInfo_CheckUpdateHint.Text" xml:space="preserve">
+    <value>Get latest version info from GitHub</value>
+  </data>
+  <data name="VersionInfo_OriginalAuthorLabel.Text" xml:space="preserve">
+    <value>Original Author</value>
   </data>
   <data name="VersionInfo_CheckingUpdate" xml:space="preserve">
     <value>Checking...</value>
@@ -481,13 +484,13 @@
     <value>Cancel</value>
   </data>
   <data name="VersionInfo_NoRelease" xml:space="preserve">
-    <value>No releases found. Please publish a release on Gitee first.</value>
+    <value>No releases found. Please publish a release on GitHub first.</value>
   </data>
   <data name="VersionInfo_ApiRateLimit" xml:space="preserve">
-    <value>Gitee API rate limited. Please try again later.</value>
+    <value>GitHub API rate limited (60 unauthenticated requests/hour). Please try again later.</value>
   </data>
   <data name="VersionInfo_ApiError" xml:space="preserve">
-    <value>Gitee API returned error code: {0}</value>
+    <value>GitHub API returned error code: {0}</value>
   </data>
   <data name="VersionInfo_NetworkError" xml:space="preserve">
     <value>Network error: {0}</value>

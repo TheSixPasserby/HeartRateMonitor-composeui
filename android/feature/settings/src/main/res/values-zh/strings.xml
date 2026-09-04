@@ -84,7 +84,7 @@
     <string name="unknown_version">未知</string>
     <string name="checking_update">正在检查...</string>
     <string name="check_update">检查更新</string>
-    <string name="subtitle_check_update">从 Gitee 获取最新版本信息</string>
+    <string name="subtitle_check_update">从 GitHub 获取最新版本信息</string>
     <string name="open_source_license">查看开源协议</string>
     <string name="subtitle_open_source_license">MIT 开源许可证</string>
     <string name="license_title">开源协议</string>
@@ -205,5 +205,6 @@
     • 使用独立 HandlerThread 处理广播，避免阻塞主线程
     
     蓝牙心率服务（BleService）作为前台服务持续运行，不会因内存预警而被中断。状态栏常驻服务和悬浮窗服务在内存极端紧张时可能被系统回收，应用会在下次启动时自动恢复。</string>
+    <string name="original_author">原作者</string>
 </resources>
 

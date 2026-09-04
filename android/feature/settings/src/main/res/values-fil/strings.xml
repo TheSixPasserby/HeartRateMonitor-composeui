@@ -84,7 +84,7 @@
     <string name="unknown_version">Hindi kilala</string>
     <string name="checking_update">Sinusuri...</string>
     <string name="check_update">Suriin ang mga update</string>
-    <string name="subtitle_check_update">Kunin ang impormasyon ng pinakabagong bersyon mula sa Gitee</string>
+    <string name="subtitle_check_update">Kunin ang impormasyon ng pinakabagong bersyon mula sa GitHub</string>
     <string name="open_source_license">Lisensya ng open source</string>
     <string name="subtitle_open_source_license">Lisensya ng MIT</string>
     <string name="license_title">Lisensya ng open source</string>
@@ -205,4 +205,5 @@
     • Paggamit ng dedikadong HandlerThread para iproseso ang mga broadcast upang maiwasan ang pag-block ng pangunahing thread
     
     Ang Bluetooth rate ng puso na serbisyo (BleService) ay tumatakbo nang tuloy-tuloy bilang foreground service at hindi naaabala ng mga babala sa memorya. Ang serbisyo ng status bar at ang serbisyo ng lumulutang na window ay maaaring bawiin ng system sa ilalim ng matinding pressure ng memorya; awtomatikong makakabawi ang app sa susunod na pagbubukas.</string>
+    <string name="original_author">Orihinal na may-akda</string>
 </resources>

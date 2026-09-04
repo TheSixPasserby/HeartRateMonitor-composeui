@@ -4,19 +4,20 @@ using HeartRate.Helpers;
 namespace HeartRate.Services;
 
 /// <summary>
-/// Gitee Release 检查更新工具（与 Android 端 UpdateChecker 逻辑保持一致）。
+/// GitHub Release 检查更新工具（与 Android 端 UpdateChecker 逻辑保持一致）。
 ///
-/// 端点：`https://gitee.com/api/v5/repos/{owner}/{repo}/releases?page=1&per_page=100`
+/// 端点：`https://api.github.com/repos/{owner}/{repo}/releases?per_page=100`
+/// 仓库为本 fork（原项目：XiaochangXu/HeartRateMonitor-composeui）。
 ///
-/// 注意：不使用 `/releases/latest`，因为 Gitee 的 latest 标记可能延迟或不准，
-/// 改为拉取列表后按语义化版本比较取最高版本，跳过 prerelease。
+/// 注意：不使用 `/releases/latest`，改为拉取列表后按语义化版本比较取最高版本，
+/// 跳过 prerelease 与 draft。未认证请求按 IP 限 60 次/小时。
 /// </summary>
 public static class UpdateCheckerService
 {
-    private const string Owner = "xiaochang-xu";
-    private const string Repo = "heart-rate-monitor-windows";
-    private const string ApiUrl = $"https://gitee.com/api/v5/repos/{Owner}/{Repo}/releases?page=1&per_page=100";
-    private const string ReleasePageUrl = $"https://gitee.com/{Owner}/{Repo}/releases/latest";
+    private const string Owner = "TheSixPasserby";
+    private const string Repo = "HeartRateMonitor-composeui";
+    private const string ApiUrl = $"https://api.github.com/repos/{Owner}/{Repo}/releases?per_page=100";
+    private const string ReleasePageUrl = $"https://github.com/{Owner}/{Repo}/releases/latest";
 
     /// <summary>检查结果（与 Android 端 UpdateChecker.Result 对应）。</summary>
     public abstract record Result
@@ -65,8 +66,8 @@ public static class UpdateCheckerService
     }
 
     /// <summary>
-    /// 从 Gitee releases 列表中找版本号最高的 release，与当前版本比较。
-    /// 跳过 prerelease，取 tag_name 按语义化版本比较取最大值。
+    /// 从 GitHub releases 列表中找版本号最高的 release，与当前版本比较。
+    /// 跳过 prerelease 与 draft，取 tag_name 按语义化版本比较取最大值。
     /// </summary>
     private static Result FindLatestRelease(string body, string currentVersion)
     {
@@ -82,6 +83,8 @@ public static class UpdateCheckerService
         foreach (var release in root.EnumerateArray())
         {
             if (release.TryGetProperty("prerelease", out var pre) && pre.ValueKind == JsonValueKind.True)
+                continue;
+            if (release.TryGetProperty("draft", out var draft) && draft.ValueKind == JsonValueKind.True)
                 continue;
             var tag = release.TryGetProperty("tag_name", out var t) ? t.GetString() ?? string.Empty : string.Empty;
             tag = tag.TrimStart('v', 'V').Trim();

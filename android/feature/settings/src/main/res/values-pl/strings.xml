@@ -84,7 +84,7 @@
     <string name="unknown_version">Nieznane</string>
     <string name="checking_update">Sprawdzanie...</string>
     <string name="check_update">Sprawdź aktualizacje</string>
-    <string name="subtitle_check_update">Pobierz informacje o najnowszej wersji z Gitee</string>
+    <string name="subtitle_check_update">Pobierz informacje o najnowszej wersji z GitHub</string>
     <string name="open_source_license">Licencja open source</string>
     <string name="subtitle_open_source_license">Licencja MIT</string>
     <string name="license_title">Licencja open source</string>
@@ -205,4 +205,5 @@
     • Używanie dedykowanego HandlerThread do przetwarzania transmisji, aby uniknąć blokowania głównego wątku
     
     Usługa tętna Bluetooth (BleService) działa jako usługa na pierwszym planie i nie jest przerywana przez ostrzeżenia o pamięci. Usługa paska stanu i usługa pływającego okna mogą zostać zwolnione przez system przy skrajnym niedoborze pamięci; aplikacja automatycznie przywróci się przy następnym uruchomieniu.</string>
+    <string name="original_author">Autor oryginału</string>
 </resources>

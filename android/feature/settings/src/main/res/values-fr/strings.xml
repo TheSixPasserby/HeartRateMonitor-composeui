@@ -84,7 +84,7 @@
     <string name="unknown_version">Inconnue</string>
     <string name="checking_update">Vérification...</string>
     <string name="check_update">Vérifier les mises à jour</string>
-    <string name="subtitle_check_update">Obtenir les informations de la dernière version depuis Gitee</string>
+    <string name="subtitle_check_update">Obtenir les informations de la dernière version depuis GitHub</string>
     <string name="open_source_license">Licence open source</string>
     <string name="subtitle_open_source_license">Licence MIT</string>
     <string name="license_title">Licence open source</string>
@@ -205,4 +205,5 @@
     • Utilisation d\'un HandlerThread dédié pour traiter les diffusions afin d\'éviter de bloquer le thread principal
     
     Le service de fréquence cardiaque Bluetooth (BleService) fonctionne en continu comme service de premier plan et n\'est pas interrompu par les avertissements de mémoire. Le service de barre d\'état et le service de fenêtre flottante peuvent être récupérés par le système en cas de forte pression mémoire ; l\'application se rétablira automatiquement à la prochaine ouverture.</string>
+    <string name="original_author">Auteur original</string>
 </resources>

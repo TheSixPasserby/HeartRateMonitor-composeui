@@ -84,7 +84,7 @@
     <string name="unknown_version">अज्ञात</string>
     <string name="checking_update">जाँच हुँदै...</string>
     <string name="check_update">अपडेट जाँच गर्नुहोस्</string>
-    <string name="subtitle_check_update">Gitee बाट नवीनतम संस्करण जानकारी प्राप्त गर्नुहोस्</string>
+    <string name="subtitle_check_update">GitHub बाट नवीनतम संस्करण जानकारी प्राप्त गर्नुहोस्</string>
     <string name="open_source_license">खुला स्रोत लाइसेन्स</string>
     <string name="subtitle_open_source_license">MIT लाइसेन्स</string>
     <string name="license_title">खुला स्रोत लाइसेन्स</string>
@@ -205,4 +205,5 @@
     • मुख्य थ्रेड ब्लक हुनबाट जोगिन प्रसारण प्रशोधनका लागि समर्पित HandlerThread प्रयोग गर्नुहोस्
     
     ब्लुटुथ मुटुको धड्कन सेवा (BleService) फोरग्राउन्ड सेवाको रूपमा निरन्तर चल्छ र मेमोरी चेतावनीले अवरोध गर्दैन। स्टेटस बार सेवा र फ्लोटिङ विन्डो सेवा चरम मेमोरी दबाबमा सिस्टमले पुन:प्राप्त गर्न सक्छ; एप अर्को पटक खोल्दा स्वचालित रूपमा पुन:प्राप्त हुनेछ।</string>
+    <string name="original_author">मूल लेखक</string>
 </resources>

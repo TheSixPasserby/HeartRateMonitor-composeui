@@ -62,7 +62,7 @@
                             </StackPanel>
                         </Button>
                         <TextBlock x:Uid="VersionInfo_CheckUpdateHint"
-                                   Text="从 Gitee 获取最新版本信息"
+                                   Text="从 GitHub 获取最新版本信息"
                                    Foreground="{ThemeResource TextFillColorTertiaryBrush}"
                                    FontSize="12" />
                     </StackPanel>
@@ -72,8 +72,8 @@
                         <TextBlock x:Uid="VersionInfo_RepoLabel.Text"
                                    Text="查看项目仓库"
                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                        <HyperlinkButton Content="https://github.com/XiaochangXu/HeartRateMonitor-composeui"
-                                         NavigateUri="https://github.com/XiaochangXu/HeartRateMonitor-composeui"
+                        <HyperlinkButton Content="https://github.com/TheSixPasserby/HeartRateMonitor-composeui"
+                                         NavigateUri="https://github.com/TheSixPasserby/HeartRateMonitor-composeui"
                                          Padding="0" />
                     </StackPanel>
 
@@ -81,6 +81,16 @@
                     <StackPanel Spacing="4">
                         <TextBlock x:Uid="VersionInfo_AndroidLabel"
                                    Text="Android端链接"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <HyperlinkButton Content="https://github.com/TheSixPasserby/HeartRateMonitor-composeui"
+                                         NavigateUri="https://github.com/TheSixPasserby/HeartRateMonitor-composeui"
+                                         Padding="0" />
+                    </StackPanel>
+
+                    <!-- 原作者（上游仓库） -->
+                    <StackPanel Spacing="4">
+                        <TextBlock x:Uid="VersionInfo_OriginalAuthorLabel"
+                                   Text="原作者"
                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                         <HyperlinkButton Content="https://github.com/XiaochangXu/HeartRateMonitor-composeui"
                                          NavigateUri="https://github.com/XiaochangXu/HeartRateMonitor-composeui"

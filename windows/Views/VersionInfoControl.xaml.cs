@@ -23,7 +23,7 @@ namespace HeartRate.Views
             VersionText.Text = v is null ? "1.0.0" : v.ToString(3);
         }
 
-        /// <summary>点击「检查更新」：从 Gitee 拉取最新 Release 并弹窗展示结果。</summary>
+        /// <summary>点击「检查更新」：从 GitHub 拉取最新 Release 并弹窗展示结果。</summary>
         private async void OnCheckUpdateClick(object sender, RoutedEventArgs e)
         {
             var root = XamlRoot;
@@ -71,7 +71,7 @@ namespace HeartRate.Views
             await dlg.ShowAsync();
         }
 
-        /// <summary>发现新版本弹窗：展示当前版本、更新内容，跳转 Gitee Release 页。</summary>
+        /// <summary>发现新版本弹窗：展示当前版本、更新内容，跳转 GitHub Release 页。</summary>
         private static async Task ShowUpdateAvailableAsync(XamlRoot root, string currentVersion,
             UpdateCheckerService.Result.UpdateAvailable info)
         {

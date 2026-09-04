@@ -450,8 +450,11 @@
   <data name="VersionInfo_CheckUpdateButton.Text" xml:space="preserve">
     <value>检查更新</value>
   </data>
-  <data name="VersionInfo_CheckUpdateHint.Text" xml:space="preserve">
-    <value>从 Gitee 获取最新版本信息</value>
+   <data name="VersionInfo_CheckUpdateHint.Text" xml:space="preserve">
+    <value>从 GitHub 获取最新版本信息</value>
+  </data>
+  <data name="VersionInfo_OriginalAuthorLabel.Text" xml:space="preserve">
+    <value>原作者</value>
   </data>
   <data name="VersionInfo_CheckingUpdate" xml:space="preserve">
     <value>正在检查...</value>
@@ -481,13 +484,13 @@
     <value>取消</value>
   </data>
   <data name="VersionInfo_NoRelease" xml:space="preserve">
-    <value>未找到任何 Release，请先在 Gitee 上发布一个版本</value>
+    <value>未找到任何 Release，请先在 GitHub 上发布一个版本</value>
   </data>
   <data name="VersionInfo_ApiRateLimit" xml:space="preserve">
-    <value>Gitee API 限流，请稍后再试</value>
+    <value>GitHub API 限流（未认证请求每小时 60 次），请稍后再试</value>
   </data>
   <data name="VersionInfo_ApiError" xml:space="preserve">
-    <value>Gitee API 返回错误码：{0}</value>
+    <value>GitHub API 返回错误码：{0}</value>
   </data>
   <data name="VersionInfo_NetworkError" xml:space="preserve">
     <value>网络错误：{0}</value>

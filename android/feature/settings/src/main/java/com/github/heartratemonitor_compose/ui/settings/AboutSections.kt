@@ -2,6 +2,7 @@ package com.github.heartratemonitor_compose.ui.settings
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -208,21 +209,58 @@ internal fun AboutActionGroup(
     }
 }
 
-/** 关于页维护者卡片：圆形头像（Gitee 优先、GitHub 兜底）+ 名称 */
-// 头像源：Gitee CDN 直链优先，失败后回退 GitHub 头像重定向地址
-private const val MAINTAINER_AVATAR_GITEE =
+/** 关于页维护者/鸣谢卡片：圆形头像（主源失败可回退兜底源）+ 名称，[onClick] 非空时整卡可点 */
+// Fork 维护者头像（GitHub 头像重定向地址）
+private const val MAINTAINER_AVATAR_GITHUB = "https://github.com/TheSixPasserby.png"
+private const val MAINTAINER_NAME = "TheSixPasserby"
+
+// 原作者（上游仓库 XiaochangXu/HeartRateMonitor-composeui）：Gitee CDN 直链优先，失败回退 GitHub
+private const val ORIGINAL_AUTHOR_AVATAR_GITEE =
     "https://foruda.gitee.com/avatar/1786838770088745389/17345020_xiaochang-xu_1786838770.png!avatar200"
-private const val MAINTAINER_AVATAR_GITHUB = "https://github.com/XiaochangXu.png"
-private const val MAINTAINER_NAME = "XiaochangXu"
+private const val ORIGINAL_AUTHOR_AVATAR_GITHUB = "https://github.com/XiaochangXu.png"
+private const val ORIGINAL_AUTHOR_NAME = "XiaochangXu"
+
+/** 本 fork 仓库地址 */
+internal const val REPO_URL = "https://github.com/TheSixPasserby/HeartRateMonitor-composeui"
+
+/** 上游原仓库地址（鸣谢来源） */
+internal const val ORIGINAL_REPO_URL = "https://github.com/XiaochangXu/HeartRateMonitor-composeui"
+
+/** 当前 fork 维护者卡片 */
+@Composable
+internal fun ForkMaintainerCard() = MaintainerCard(
+    label = stringResource(R.string.maintainer),
+    name = MAINTAINER_NAME,
+    primaryAvatarUrl = MAINTAINER_AVATAR_GITHUB,
+    fallbackAvatarUrl = null
+)
+
+/** 原作者鸣谢卡片：点击跳转上游原仓库 */
+@Composable
+internal fun OriginalAuthorCard(onClick: () -> Unit) = MaintainerCard(
+    label = stringResource(R.string.original_author),
+    name = ORIGINAL_AUTHOR_NAME,
+    primaryAvatarUrl = ORIGINAL_AUTHOR_AVATAR_GITEE,
+    fallbackAvatarUrl = ORIGINAL_AUTHOR_AVATAR_GITHUB,
+    onClick = onClick
+)
 
 @Composable
-internal fun MaintainerCard() {
+private fun MaintainerCard(
+    label: String,
+    name: String,
+    primaryAvatarUrl: String,
+    fallbackAvatarUrl: String?,
+    onClick: (() -> Unit)? = null
+) {
     val context = LocalContext.current
-    var avatarUrl by remember { mutableStateOf(MAINTAINER_AVATAR_GITEE) }
+    var avatarUrl by remember { mutableStateOf(primaryAvatarUrl) }
     var avatarFailed by remember { mutableStateOf(false) }
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
         shape = MaterialTheme.shapes.extraLarge,
         color = MaterialTheme.colorScheme.surfaceBright,
         contentColor = MaterialTheme.colorScheme.onSurface
@@ -250,13 +288,14 @@ internal fun MaintainerCard() {
                             .crossfade(true)
                             .size(96)
                             .build(),
-                        contentDescription = stringResource(R.string.maintainer),
+                        contentDescription = label,
                         modifier = Modifier
                             .fillMaxSize()
                             .clip(CircleShape),
                         onError = {
-                            if (avatarUrl == MAINTAINER_AVATAR_GITEE) {
-                                avatarUrl = MAINTAINER_AVATAR_GITHUB
+                            val fallback = fallbackAvatarUrl
+                            if (fallback != null && avatarUrl == primaryAvatarUrl) {
+                                avatarUrl = fallback
                             } else {
                                 avatarFailed = true
                             }
@@ -267,13 +306,13 @@ internal fun MaintainerCard() {
             Spacer(Modifier.width(16.dp))
             Column {
                 Text(
-                    text = stringResource(R.string.maintainer),
+                    text = label,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = MAINTAINER_NAME,
+                    text = name,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )

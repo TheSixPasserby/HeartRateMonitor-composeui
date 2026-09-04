@@ -84,7 +84,7 @@
     <string name="unknown_version">Bilinmiyor</string>
     <string name="checking_update">Kontrol ediliyor...</string>
     <string name="check_update">Güncellemeleri kontrol et</string>
-    <string name="subtitle_check_update">Gitee\'den en son sürüm bilgilerini alın</string>
+    <string name="subtitle_check_update">GitHub\'den en son sürüm bilgilerini alın</string>
     <string name="open_source_license">Açık kaynak lisansı</string>
     <string name="subtitle_open_source_license">MIT lisansı</string>
     <string name="license_title">Açık kaynak lisansı</string>
@@ -205,4 +205,5 @@
     • Ana iş parçacığını bloklamamak için yayın işleme için özel bir HandlerThread kullanma
     
     Bluetooth kalp atış hızı hizmeti (BleService) ön plan hizmeti olarak sürekli çalışır ve bellek uyarılarından etkilenmez. Durum çubuğu hizmeti ve yüzen pencere hizmeti aşırı bellek baskısı altında sistem tarafından geri alınabilir; uygulama bir sonraki açılışta otomatik olarak kendini toparlar.</string>
+    <string name="original_author">Orijinal yazar</string>
 </resources>

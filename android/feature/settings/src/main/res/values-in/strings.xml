@@ -84,7 +84,7 @@
     <string name="unknown_version">Tidak dikenal</string>
     <string name="checking_update">Memeriksa...</string>
     <string name="check_update">Periksa pembaruan</string>
-    <string name="subtitle_check_update">Dapatkan informasi versi terbaru dari Gitee</string>
+    <string name="subtitle_check_update">Dapatkan informasi versi terbaru dari GitHub</string>
     <string name="open_source_license">Lisensi sumber terbuka</string>
     <string name="subtitle_open_source_license">Lisensi MIT</string>
     <string name="license_title">Lisensi sumber terbuka</string>
@@ -205,4 +205,5 @@
     • Menggunakan HandlerThread khusus untuk memproses siaran agar tidak memblokir utas utama
     
     Layanan detak jantung Bluetooth (BleService) berjalan terus-menerus sebagai layanan latar depan dan tidak terganggu oleh peringatan memori. Layanan bilah status dan layanan jendela mengambang dapat dipulihkan oleh sistem saat tekanan memori ekstrem; aplikasi akan pulih otomatis pada pembukaan berikutnya.</string>
+    <string name="original_author">Penulis asli</string>
 </resources>

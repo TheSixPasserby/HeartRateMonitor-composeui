@@ -84,7 +84,7 @@
     <string name="unknown_version">Không xác định</string>
     <string name="checking_update">Đang kiểm tra...</string>
     <string name="check_update">Kiểm tra cập nhật</string>
-    <string name="subtitle_check_update">Nhận thông tin phiên bản mới nhất từ Gitee</string>
+    <string name="subtitle_check_update">Nhận thông tin phiên bản mới nhất từ GitHub</string>
     <string name="open_source_license">Giấy phép mã nguồn mở</string>
     <string name="subtitle_open_source_license">Giấy phép MIT</string>
     <string name="license_title">Giấy phép mã nguồn mở</string>
@@ -205,4 +205,5 @@
     • Sử dụng HandlerThread riêng để xử lý phát sóng, tránh chặn luồng chính
     
     Dịch vụ nhịp tim Bluetooth (BleService) chạy liên tục như dịch vụ nền trước và không bị gián đoạn bởi cảnh báo bộ nhớ. Dịch vụ thanh trạng thái và dịch vụ cửa sổ nổi có thể bị hệ thống thu hồi khi áp lực bộ nhớ cực lớn; ứng dụng sẽ tự khôi phục ở lần mở tiếp theo.</string>
+    <string name="original_author">Tác giả gốc</string>
 </resources>

@@ -21,12 +21,13 @@ class UpdateChecker @Inject constructor() {
     companion object {
         private const val TAG = "UpdateChecker"
 
-        private const val OWNER = "xiaochang-xu"
-        private const val REPO = "heart-rate-monitor-composeui"
+        // Fork 的 GitHub 仓库（原项目：XiaochangXu/HeartRateMonitor-composeui）
+        private const val OWNER = "TheSixPasserby"
+        private const val REPO = "HeartRateMonitor-composeui"
         private const val API_URL =
-            "https://gitee.com/api/v5/repos/$OWNER/$REPO/releases?page=1&per_page=100"
+            "https://api.github.com/repos/$OWNER/$REPO/releases?per_page=100"
         private const val RELEASE_PAGE_URL =
-            "https://gitee.com/$OWNER/$REPO/releases/latest"
+            "https://github.com/$OWNER/$REPO/releases/latest"
 
         /** 缓存 TTL：已最新 30 分钟，错误（含 403 限流）10 分钟；有更新不缓存 */
         private const val TTL_UP_TO_DATE_MS = 30 * 60 * 1000L
@@ -87,7 +88,8 @@ class UpdateChecker @Inject constructor() {
     /**
      * 异步检查最新版本。
      *
-     * 带结果缓存（内存，进程存活期间有效），防止频繁点击触发 Gitee API 限流：
+     * 带结果缓存（内存，进程存活期间有效），防止频繁点击触发 GitHub API 限流
+     * （未认证请求按 IP 限 60 次/小时）：
      * - [Result.UpToDate] 缓存 30 分钟（命中时最多延迟看到新版本一个 TTL）
      * - [Result.Error] 缓存 10 分钟（避免 403 限流死循环）
      * - [Result.UpdateAvailable] 不缓存，有更新时始终实时请求
@@ -132,9 +134,9 @@ class UpdateChecker @Inject constructor() {
     }
 
     /**
-     * 从 Gitee releases 列表中找版本号最高的 release，与当前版本比较。
+     * 从 GitHub releases 列表中找版本号最高的 release，与当前版本比较。
      *
-     * 跳过 prerelease，取 tag_name 按语义化版本比较取最大值。
+     * 跳过 prerelease 与 draft，取 tag_name 按语义化版本比较取最大值。
      */
     private fun findLatestRelease(context: Context, body: String, currentVersion: String): Result {
         val releases = JSONArray(body)
@@ -142,12 +144,12 @@ class UpdateChecker @Inject constructor() {
             return Result.Error(context.getString(R.string.update_no_release))
         }
 
-        // 遍历所有 release，找出版本号最高的非 prerelease
+        // 遍历所有 release，找出版本号最高的非 prerelease 非 draft
         var bestVersion = ""
         var bestRelease: JSONObject? = null
         for (i in 0 until releases.length()) {
             val release = releases.getJSONObject(i)
-            if (release.optBoolean("prerelease", false)) continue
+            if (release.optBoolean("prerelease", false) || release.optBoolean("draft", false)) continue
             val tagName = release.optString("tag_name", "").removePrefix("v").removePrefix("V").trim()
             if (tagName.isEmpty()) continue
             if (bestVersion.isEmpty() || compareVersions(tagName, bestVersion) > 0) {

@@ -84,7 +84,7 @@
     <string name="unknown_version">Unbekannt</string>
     <string name="checking_update">Wird geprüft...</string>
     <string name="check_update">Nach Updates suchen</string>
-    <string name="subtitle_check_update">Neueste Versionsinformationen von Gitee abrufen</string>
+    <string name="subtitle_check_update">Neueste Versionsinformationen von GitHub abrufen</string>
     <string name="open_source_license">Open-Source-Lizenz</string>
     <string name="subtitle_open_source_license">MIT-Lizenz</string>
     <string name="license_title">Open-Source-Lizenz</string>
@@ -205,4 +205,5 @@
     • Verwendung eines dedizierten HandlerThread für die Broadcast-Verarbeitung, um die Blockierung des Hauptthreads zu vermeiden
     
     Der Bluetooth-Herzfrequenzdienst (BleService) läuft als Vordergrunddienst kontinuierlich und wird nicht durch Speicherwarnungen unterbrochen. Der Statusleisten-Dienst und der Schwebefenster-Dienst können bei extremem Speicherdruck vom System zurückgeholt werden; die App stellt sich beim nächsten Start automatisch wieder her.</string>
+    <string name="original_author">Originalautor</string>
 </resources>
