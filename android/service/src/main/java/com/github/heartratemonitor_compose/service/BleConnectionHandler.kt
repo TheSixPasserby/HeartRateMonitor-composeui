@@ -38,6 +38,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import java.util.concurrent.atomic.AtomicBoolean
@@ -116,6 +118,11 @@ class BleConnectionHandler(
      *  IO 线程 stateMonitor 写入、checkAutoReconnect（IO 线程）读取，补 @Volatile 保证可见性。 */
     @Volatile private var lastConnectedDeviceId: String? = null
     @Volatile private var lastConnectedDeviceName: String = "Unknown Device"
+
+    // 手动记录开始/停止命令串行化：scope 为 IO 多线程池，快速的开始→停止连击
+    // 会让两个命令协程并发执行（停止可能抢在会话建好前跑完，留下永不关闭的会话）
+    private val recordingCommandMutex = Mutex()
+
     // 连接/扫描纪元：用户每次发起新的 BLE 活动（扫描/连接）时自增。
     // 被取消的旧连接任务的 finally 用其启动时捕获的纪元做校验，
     // 避免退避中的旧自动重连误取消用户刚发起的新连接。
@@ -573,20 +580,32 @@ class BleConnectionHandler(
      * 手动开始记录（控制面，配合 [BleConnectionManager.startRecording]）。
      * 仅在已连接且记录开关非 OFF 时生效；重复调用幂等。
      * 无连接时静默忽略——首页按钮本就仅在已连接时可点。
+     *
+     * 计时状态在调用线程同步占位：双击时第二次调用被首行空检拦下。若延后到
+     * IO 协程内才落状态，两次点击都会通过空检并各建一次会话，第一条会话被
+     * startSession 的残留清理关闭后在历史留下 0 条记录的空卡片。
      */
     override fun startRecording() {
         if (repository.recordingStartTime.value != null) return
         if (!isDeviceConnected()) return
+        repository.setRecordingStartTime(System.currentTimeMillis())
         scope.launch {
-            val name = repository.connectedDevice.value?.name ?: lastConnectedDeviceName
-            val sessionId = heartRateRecorder.startSession(name)
-            // startSession 返回 null = 记录处于 OFF 模式，不落计时状态
-            repository.setRecordingStartTime(
-                if (sessionId != null) System.currentTimeMillis() else null
-            )
-            if (sessionId != null) {
-                // 手动开始时清空实时图表并归零时间基准：折线从 0 秒重新绘制，极值同步重置
-                repository.resetChartSession()
+            recordingCommandMutex.withLock {
+                // 占位到此处执行期间可能恰好断开：断开清理已结束会话并清零计时状态，
+                // 此时不得再建会话（会留下无归属的「进行中」空会话）
+                if (!isDeviceConnected()) {
+                    repository.setRecordingStartTime(null)
+                    return@withLock
+                }
+                val name = repository.connectedDevice.value?.name ?: lastConnectedDeviceName
+                val sessionId = heartRateRecorder.startSession(name)
+                if (sessionId != null) {
+                    // 手动开始时清空实时图表并归零时间基准：折线从 0 秒重新绘制，极值同步重置
+                    repository.resetChartSession()
+                } else {
+                    // startSession 返回 null = 记录处于 OFF 模式，回滚占位的计时状态
+                    repository.setRecordingStartTime(null)
+                }
             }
         }
     }
@@ -598,8 +617,10 @@ class BleConnectionHandler(
     override fun stopRecording() {
         if (repository.recordingStartTime.value == null) return
         scope.launch {
-            heartRateRecorder.endSessionDiscardIfEmpty()
-            repository.setRecordingStartTime(null)
+            recordingCommandMutex.withLock {
+                heartRateRecorder.endSessionDiscardIfEmpty()
+                repository.setRecordingStartTime(null)
+            }
         }
     }
 

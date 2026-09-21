@@ -154,15 +154,11 @@ class SettingsRepository(context: Context, private val scope: CoroutineScope) {
     /**
      * 历史记录模式统一读取（读预热内存快照，同步零 IO）。
      *
-     * 含旧布尔开关自动迁移：mode 键缺失时，旧 `history_recording_enabled=true`
-     * 映射为 [RecordingMode.AUTO]（保留旧「连接即记录」行为），否则回退新默认
-     * [RecordingMode.MANUAL]；不再回写旧键。业务禁止使用旧布尔键。
+     * 旧布尔开关的迁移语义（旧 `history_recording_enabled=true` → AUTO，否则
+     * MANUAL，不回写旧键）唯一实现在 [AppSettings.from]，此处仅委托快照，
+     * 避免两处迁移逻辑漂移。业务禁止使用旧布尔键。
      */
-    fun recordingMode(): String {
-        return getNullable(SettingsKeys.RECORDING_MODE)
-            ?: if (get(SettingsKeys.HISTORY_RECORDING_ENABLED)) RecordingMode.AUTO
-               else RecordingMode.MANUAL
-    }
+    fun recordingMode(): String = settings.value.recordingMode
 
     /** 记录是否启用（模式 != OFF；图表统计与其共用此开关语义）。 */
     fun recordingEnabled(): Boolean = recordingMode() != RecordingMode.OFF

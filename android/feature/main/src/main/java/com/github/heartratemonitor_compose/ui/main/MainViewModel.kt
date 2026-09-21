@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.github.heartratemonitor_compose.data.settings.AppSettings
-import com.github.heartratemonitor_compose.data.settings.RecordingMode
 import com.github.heartratemonitor_compose.data.settings.SettingsKeys
 import com.github.heartratemonitor_compose.ble.BleState
 import com.github.heartratemonitor_compose.data.repository.FavoriteDeviceRepository
@@ -100,9 +99,7 @@ class MainViewModel @Inject constructor(
         // 切 OFF 时的会话收尾与图表 reset/clear 联动已由服务层 BleSettingsListener 接管
         viewModelScope.launch {
             settings.observe(SettingsKeys.RECORDING_MODE).drop(1).collect { mode ->
-                setState {
-                    it.copy(recordingMode = mode, isHistoryEnabled = mode != RecordingMode.OFF)
-                }
+                setState { it.copy(recordingMode = mode) }
             }
         }
 

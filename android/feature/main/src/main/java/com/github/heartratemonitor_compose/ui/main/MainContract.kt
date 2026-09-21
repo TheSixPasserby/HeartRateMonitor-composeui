@@ -43,9 +43,6 @@ data class MainUiState(
     val sessionMinHr: Int = 0,
     /** 记录模式下拉（OFF/AUTO/MANUAL），见 [RecordingMode] */
     val recordingMode: String = AppSettings.defaultFor(SettingsKeys.RECORDING_MODE),
-    /** 记录模式 != OFF：图表统计与记录能力开关 */
-    val isHistoryEnabled: Boolean =
-        AppSettings.defaultFor(SettingsKeys.RECORDING_MODE) != RecordingMode.OFF,
     /** 手动记录会话开始时间戳（epoch ms，null = 未在记录），驱动首页记录按钮/计时器 */
     val recordingStartTime: Long? = null,
     val isSpeedEnabled: Boolean = AppSettings.defaultFor(SettingsKeys.SPEED_DISPLAY_ENABLED),
@@ -57,7 +54,10 @@ data class MainUiState(
     val heartbeatAnimationEnabled: Boolean = AppSettings.defaultFor(SettingsKeys.HEARTBEAT_ANIMATION_ENABLED),
     val fullscreenHeartTextColor: Int = android.graphics.Color.RED,
     val fullscreenSoundMode: String = "off"
-)
+) {
+    /** 记录模式 != OFF：图表统计与记录能力开关（派生值，单一来源为 [recordingMode]） */
+    val isHistoryEnabled: Boolean get() = recordingMode != RecordingMode.OFF
+}
 
 /**
  * 设备页专用精简状态：从 [MainUiState] 投影出设备页需要的字段。
@@ -113,7 +113,6 @@ internal fun initialMainUiState(settings: SettingsRepository, context: Context):
         ),
         favoriteDeviceId = s.favoriteDeviceId,
         recordingMode = s.recordingMode,
-        isHistoryEnabled = s.recordingMode != RecordingMode.OFF,
         isSpeedEnabled = s.speedDisplayEnabled,
         scanFilterEnabled = s.scanFilterEnabled,
         ringMaxHr = s.heartRateRingMax,

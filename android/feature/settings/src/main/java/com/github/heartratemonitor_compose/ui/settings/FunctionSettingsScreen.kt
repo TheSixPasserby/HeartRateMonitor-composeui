@@ -252,17 +252,24 @@ private fun DisplayAndRecordGroup(
                         style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
+                    // 点击当前已选档位直接关闭：值未变化，无需再过性能警告确认
                     RecordModeRow(
                         title = stringResource(R.string.record_mode_manual),
                         description = stringResource(R.string.record_mode_manual_desc),
                         selected = uiState.recordingMode == RecordingMode.MANUAL,
-                        onSelect = { pendingRecordMode = RecordingMode.MANUAL }
+                        onSelect = {
+                            if (uiState.recordingMode == RecordingMode.MANUAL) dismiss()
+                            else pendingRecordMode = RecordingMode.MANUAL
+                        }
                     )
                     RecordModeRow(
                         title = stringResource(R.string.record_mode_auto),
                         description = stringResource(R.string.record_mode_auto_desc),
                         selected = uiState.recordingMode == RecordingMode.AUTO,
-                        onSelect = { pendingRecordMode = RecordingMode.AUTO }
+                        onSelect = {
+                            if (uiState.recordingMode == RecordingMode.AUTO) dismiss()
+                            else pendingRecordMode = RecordingMode.AUTO
+                        }
                     )
                     RecordModeRow(
                         title = stringResource(R.string.record_mode_off),

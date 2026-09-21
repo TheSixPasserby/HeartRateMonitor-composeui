@@ -200,7 +200,12 @@ class BleService : Service(), FairMemoryReceiver.MemoryListener, BleConnectionMa
             notificationManager.startForeground()
             broadcastManager.broadcast()
         },
-        onHistoryRecordingDisabled = { serviceScope.launch { heartRateRecorder.endSession() } },
+        onHistoryRecordingDisabled = {
+            // 手动记录进行中切到 OFF：计时状态必须随会话一起清零，否则切回手动档时
+            // 首页按 recordingStartTime 残值渲染出假「记录中」（计时在走、实际无会话落盘）
+            heartRateRepository.setRecordingStartTime(null)
+            serviceScope.launch { heartRateRecorder.endSession() }
+        },
         onChartCacheClear = {
             // 关闭历史记录开关时清空图表缓存（原 UI 层 ChartDataManager.clear 联动下移至服务层）
             // SessionChartTracker 方法 @Synchronized 线程安全，无需切线程
