@@ -28,7 +28,8 @@ android {
         minSdk = 24
         targetSdk = 37
         versionCode = 59
-        versionName = "4.9.7"
+        // beta 流水线（beta-android.yml）经 VERSION_SUFFIX 注入 "-beta.N" 后缀；本地/正式构建无后缀
+        versionName = "4.9.7" + (System.getenv("VERSION_SUFFIX") ?: "")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

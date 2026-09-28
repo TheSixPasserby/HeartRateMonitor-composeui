@@ -203,13 +203,14 @@ class UpdateChecker @Inject constructor() {
      * 语义化版本比较。
      *
      * 支持 "1.2.3" / "1.2" / "1" 等格式，不足的位补 0。
-     * 不处理预发布后缀（-alpha/-beta 等），仅比较数字位。
+     * 预发布后缀（-beta.N 等）在比较前剥离，仅比较数字位：
+     * beta 装机版与同基线正式版视为相等，避免 beta 用户被反向提示「更新」。
      *
      * @return 负数 = current < remote（有更新）；0 = 相等；正数 = current > remote
      */
     private fun compareVersions(current: String, remote: String): Int {
-        val cur = current.split(".").map { it.toIntOrNull() ?: 0 }
-        val rem = remote.split(".").map { it.toIntOrNull() ?: 0 }
+        val cur = current.substringBefore('-').split(".").map { it.toIntOrNull() ?: 0 }
+        val rem = remote.substringBefore('-').split(".").map { it.toIntOrNull() ?: 0 }
         val maxLen = maxOf(cur.size, rem.size)
         for (i in 0 until maxLen) {
             val c = cur.getOrElse(i) { 0 }
