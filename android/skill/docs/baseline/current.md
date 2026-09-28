@@ -66,3 +66,12 @@ AppDatabaseTest / HeartRateRecorderTest 的 Room 3→4 迁移缺失导致的 28 
 - 新增历史会话 CSV 导出（详情页单文件 + 列表多选批量，SAF 写盘；`HistoryCsvExporter` @ `:data:repository`）及 `HistoryCsvExporterTest`（含 ar/ne 本地数字系统 Locale 安全性）
 - 三档记录模式改造涉及 `HeartRateRecorderTest` 等换键与新增用例
 - 本地无构建环境，实际用例数以合并上游后的 CI 结果为准，通过后回填本文件合计
+
+## CI 环境已知 flaky（2026-09-28，GitHub Actions ubuntu-latest）
+
+beta 流水线三次运行（含一次纯上游代码对照实验）确认：以下失败为 CI 慢机器环境性问题，非代码回归——纯上游 main 在同一环境挂同样用例。
+
+- `BleConnectionHandlerTest > successful connect then link loss triggers auto reconnect`：真实时间轮询 + Robolectric 蓝牙 shadow，本地「重跑即过」在 CI 上不成立（3/3 次失败，含上游对照）
+- DataStore「瞬态回退窗口」家族：每次漂移挂不同用例（观测到 `SettingsRepositoryTest` boolean/long set and get、`LiquidGlassStateTest`、`ThemeStateTest` 各一次）
+
+处置：beta-android.yml 中单测为非阻塞（continue-on-error），失败清单打入 job summary，须人工核对是否落在上述清单内；清单外的新失败按真实回归处理。可信基线仍以本地串行全量跑为准（契约 07）。
