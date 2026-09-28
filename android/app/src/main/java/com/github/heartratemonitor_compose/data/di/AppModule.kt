@@ -2,8 +2,13 @@ package com.github.heartratemonitor_compose.data.di
 
 import android.content.Context
 import android.content.Intent
+import androidx.core.app.TaskStackBuilder
 import com.github.heartratemonitor_compose.data.settings.di.AppScope
+import com.github.heartratemonitor_compose.service.di.AlarmPageIntents
+import com.github.heartratemonitor_compose.service.di.FairMemoryPageIntents
 import com.github.heartratemonitor_compose.ui.main.MainActivity
+import com.github.heartratemonitor_compose.ui.page.AlarmActivity
+import com.github.heartratemonitor_compose.ui.page.FairMemoryActivity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,10 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
-/**
- * `() -> Intent` 引用 MainActivity，由 :app 提供，:service 的 FairMemoryNotifier 不再 import MainActivity。
- * `(Boolean) -> Unit` 由 StatusBarSettingsViewModel 构造注入（无悬浮窗权限跳系统权限页前外部启动抑制）。
- */
+// ()->Intent 由 :app 提供，使 :service 的 FairMemoryNotifier 不再 import MainActivity。
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
@@ -42,4 +44,31 @@ object AppModule {
     @Provides
     fun provideSuppressHideForExternalLaunch(): @JvmSuppressWildcards (Boolean) -> Unit =
         { value -> MainActivity.setSuppressHideForExternalLaunch(value) }
+
+    // 二级页直达须垫 MainActivity，返回键才能回主界面而非桌面
+    @Provides
+    @Singleton
+    @AlarmPageIntents
+    fun provideAlarmPageIntents(
+        @ApplicationContext context: Context,
+        reopenAppIntent: @JvmSuppressWildcards () -> Intent
+    ): @JvmSuppressWildcards () -> Array<Intent> = {
+        TaskStackBuilder.create(context)
+            .addNextIntent(reopenAppIntent())
+            .addNextIntent(Intent(context, AlarmActivity::class.java))
+            .intents
+    }
+
+    @Provides
+    @Singleton
+    @FairMemoryPageIntents
+    fun provideFairMemoryPageIntents(
+        @ApplicationContext context: Context,
+        reopenAppIntent: @JvmSuppressWildcards () -> Intent
+    ): @JvmSuppressWildcards () -> Array<Intent> = {
+        TaskStackBuilder.create(context)
+            .addNextIntent(reopenAppIntent())
+            .addNextIntent(Intent(context, FairMemoryActivity::class.java))
+            .intents
+    }
 }

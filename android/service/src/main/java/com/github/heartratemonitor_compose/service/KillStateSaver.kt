@@ -12,15 +12,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * 当 [FairMemoryReceiver] 收到 ACTION_KILL 时，系统留给应用的时间窗口很短，
- * 必须立即把当前关键 UI 状态写入 DataStore，以便下次启动时恢复体验。
+ * ACTION_KILL 时系统时间窗口极短，必须立即将关键 UI 状态写入 DataStore。
  *
- * 写入路径直连 [settingsDataStore] 而非 SettingsRepository 的即发即忘 setter：
- * KILL 场景进程随时被杀，异步 launch 可能来不及落盘，必须 runBlocking 同步等待写完。
- *
- * Hilt 单例（Phase 2 起由 Hilt 装配，替代 AppContainer）。
- * 必须保持 [Singleton]：AppRoot（MainActivity 注入）写入 currentSnapshot，
- * MainViewModel 调用 save() 持久化——若两者拿到不同实例，save() 会持久化空快照，KILL 现场恢复失效。
+ * ⚠️ 反直觉设计：必须 runBlocking 同步写 DataStore——异步 launch 可能来不及落盘；
+ * 必须保持 @Singleton，否则 save() 持久化空快照导致 KILL 现场恢复失效。
  */
 @Singleton
 class KillStateSaver @Inject constructor(
@@ -33,7 +28,6 @@ class KillStateSaver @Inject constructor(
         private set
 
     data class Snapshot(
-        val route: String = "",
         val tab: String = "",
         val isFullScreen: Boolean = false,
         val connectedDeviceId: String? = null,
@@ -50,7 +44,6 @@ class KillStateSaver @Inject constructor(
             runBlocking(Dispatchers.IO) {
                 application.settingsDataStore.edit { prefs ->
                     prefs[SettingsKeys.KILL_STATE_SAVED] = true
-                    prefs[SettingsKeys.KILL_STATE_ROUTE] = snapshot.route
                     prefs[SettingsKeys.KILL_STATE_TAB] = snapshot.tab
                     prefs[SettingsKeys.KILL_STATE_FULLSCREEN] = snapshot.isFullScreen
                     prefs.putOrRemove(
@@ -64,14 +57,14 @@ class KillStateSaver @Inject constructor(
                     prefs[SettingsKeys.KILL_STATE_TIMESTAMP] = System.currentTimeMillis()
                 }
             }
-            Log.i(TAG, "KILL 现场已保存: route=${snapshot.route}, tab=${snapshot.tab}, " +
+            Log.i(TAG, "KILL 现场已保存: tab=${snapshot.tab}, " +
                     "fullscreen=${snapshot.isFullScreen}, device=${snapshot.connectedDeviceId}")
         } catch (e: Exception) {
             Log.e(TAG, "保存 KILL 现场失败", e)
         }
     }
 
-    /** null 值不能写入 DataStore，等价旧 putString(key, null) → remove(key) 语义。 */
+    // ⚠️ 反直觉设计：null 不能写入 DataStore，等价旧 putString(key, null) → remove(key)
     private fun androidx.datastore.preferences.core.MutablePreferences.putOrRemove(
         key: androidx.datastore.preferences.core.Preferences.Key<String>,
         value: String?
@@ -90,7 +83,6 @@ class KillStateSaver @Inject constructor(
         }
 
         return Snapshot(
-            route = settings.get(SettingsKeys.KILL_STATE_ROUTE),
             tab = settings.get(SettingsKeys.KILL_STATE_TAB),
             isFullScreen = settings.get(SettingsKeys.KILL_STATE_FULLSCREEN),
             connectedDeviceId = settings.getNullable(SettingsKeys.KILL_STATE_CONNECTED_DEVICE_ID),
@@ -104,6 +96,7 @@ class KillStateSaver @Inject constructor(
     fun clear() {
         try {
             settings.set(SettingsKeys.KILL_STATE_SAVED, false)
+            // KILL_STATE_ROUTE 已随多 Activity 迁移废弃，此处 remove 清理旧版本升级残留
             settings.remove(SettingsKeys.KILL_STATE_ROUTE)
             settings.remove(SettingsKeys.KILL_STATE_TAB)
             settings.remove(SettingsKeys.KILL_STATE_FULLSCREEN)

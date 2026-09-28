@@ -16,21 +16,18 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.github.heartratemonitor_compose.service.R
+import com.github.heartratemonitor_compose.service.di.FairMemoryPageIntents
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * 当应用在前台收到 TRIM 广播且达到查杀条件时，向用户推送差异化通知：
- * - Java 堆内存异常：提示用户手动关闭应用。
- * - 物理内存异常：提示应用即将/已被系统关闭，提供“重新打开”操作。
- *
- * “重新打开应用” Intent 由 :app 组合根 Hilt 绑定注入（本模块不再 import MainActivity）。
- * Hilt 单例（Phase 2 起由 Hilt 装配，替代 AppContainer）。
+ * TRIM 广播且达查杀条件时向前台推送差异化通知；提供"重新打开应用" Intent。
  */
 @Singleton
 class FairMemoryNotifier @Inject constructor(
     private val application: Application,
-    private val reopenAppIntent: @JvmSuppressWildcards () -> Intent
+    private val reopenAppIntent: @JvmSuppressWildcards () -> Intent,
+    @FairMemoryPageIntents private val fairMemoryPageIntents: @JvmSuppressWildcards () -> Array<Intent>
 ) {
 
     @Volatile
@@ -110,8 +107,7 @@ class FairMemoryNotifier @Inject constructor(
     }
 
     /**
-     * 显示 Java 堆内存异常通知。
-     * 仅在应用处于前台时推送，避免后台打扰用户。
+     * 显示 Java 堆内存异常通知。仅在应用处于前台时推送，避免后台打扰。
      */
     fun showHeapMemoryNotification(context: Context) {
         if (!isAppInForeground()) return
@@ -150,18 +146,18 @@ class FairMemoryNotifier @Inject constructor(
     }
 
     /**
-     * 显示物理内存异常通知。
-     * 仅在应用处于前台时推送；通知会保留在通知栏，即使系统随后查杀应用，用户仍可点击重新打开。
+     * 显示物理内存异常通知。仅在应用处于前台时推送；通知保留，用户仍可点击重新打开。
      */
     fun showPssMemoryNotification(context: Context) {
         if (!isAppInForeground()) return
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val reopenIntent = PendingIntent.getActivity(
+        // TaskStackBuilder 垫 MainActivity：直达 FairMemory 页后返回键回主界面而非桌面
+        val pageIntents = PendingIntent.getActivities(
             context,
             0,
-            reopenAppIntent(),
+            fairMemoryPageIntents(),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
@@ -174,8 +170,8 @@ class FairMemoryNotifier @Inject constructor(
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_SYSTEM)
             .setAutoCancel(true)
-            .setContentIntent(reopenIntent)
-            .addAction(0, context.getString(R.string.fair_memory_reopen_app), reopenIntent)
+            .setContentIntent(pageIntents)
+            .addAction(0, context.getString(R.string.fair_memory_reopen_app), pageIntents)
             .build()
 
         manager.notify(PSS_NOTIFICATION_ID, notification)

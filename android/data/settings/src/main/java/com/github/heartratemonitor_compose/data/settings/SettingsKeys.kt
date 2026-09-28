@@ -6,23 +6,12 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 
-/**
- * 键值字符串与 SharedPreferences / 原 PrefsKeys 时期完全一致，
- * 保证 SharedPreferencesMigration 迁移后数据无损对应。禁止更改任何键名。
- * 读写一律走 SettingsRepository 的泛型 API（禁止字符串直接拼接键名）。
- * 默认值唯一来源是 [AppSettings.DEFAULTS]。
- */
+// 键名与旧 PrefsKeys 完全一致，禁止改动；读写经 SettingsRepository 类型化 API。
 object SettingsKeys {
 
-    /**
-     * 旧布尔开关，仅作迁移读取保留（SharedPreferencesMigration 以来同名），
-     * 禁止新代码直接读写；行为配置一律走 [RECORDING_MODE]。
-     */
+    // 旧布尔开关，仅作迁移读取保留；行为配置一律走 [RECORDING_MODE]。
     val HISTORY_RECORDING_ENABLED = booleanPreferencesKey("history_recording_enabled")
-    /**
-     * 历史记录模式（取代旧布尔开关）：见 [RecordingMode]。
-     * 键名固定，勿改（老数据迁移依赖）。
-     */
+    // 历史记录模式（取代旧布尔开关）：见 [RecordingMode]。键名固定，勿改（老数据迁移依赖）。
     val RECORDING_MODE = stringPreferencesKey("history_recording_mode")
     val HEARTBEAT_ANIMATION_ENABLED = booleanPreferencesKey("heartbeat_animation_enabled")
     val SPEED_DISPLAY_ENABLED = booleanPreferencesKey("speed_display_enabled")
@@ -56,7 +45,7 @@ object SettingsKeys {
     val STATUS_BAR_Y_OFFSET = intPreferencesKey("status_bar_y_offset")
     val STATUS_BAR_SIZE = intPreferencesKey("status_bar_size")
     val STATUS_BAR_TEXT_THICKNESS = intPreferencesKey("status_bar_text_thickness")
-    // 历史遗留键，当前无调用点；保留以承接存量设备数据
+    // 历史遗留键，无调用点；保留以承接存量设备数据
     val STATUS_BAR_WHITE_TEXT = booleanPreferencesKey("status_bar_white_text")
     val STATUS_BAR_TEXT_COLOR = intPreferencesKey("status_bar_text_color")
 
@@ -88,8 +77,8 @@ object SettingsKeys {
     val THEME_PALETTE_STYLE = stringPreferencesKey("theme_palette_style")
 
     val LIQUID_GLASS_ENABLED = booleanPreferencesKey("liquid_glass_enabled")
-    val LIQUID_GLASS_BLUR = floatPreferencesKey("liquid_glass_blur")                    // dp
-    val LIQUID_GLASS_DISTORTION = floatPreferencesKey("liquid_glass_distortion")        // dp
+    val LIQUID_GLASS_BLUR = floatPreferencesKey("liquid_glass_blur")
+    val LIQUID_GLASS_DISTORTION = floatPreferencesKey("liquid_glass_distortion")
 
     val KILL_STATE_SAVED = booleanPreferencesKey("kill_state_saved")
     val KILL_STATE_ROUTE = stringPreferencesKey("kill_state_route")

@@ -29,7 +29,6 @@ import javax.inject.Inject
  * 扫描/连接/断开/自动重连状态机见 [BleConnectionHandler]，
  * 前台通知构建见 [BleNotificationManager]。
  * 本类保留 Service 生命周期编排与组件构造。
- * Phase 5 起依赖由 Hilt 字段注入。
  */
 @AndroidEntryPoint
 class BleService : Service(), FairMemoryReceiver.MemoryListener, BleConnectionManager {
@@ -48,6 +47,7 @@ class BleService : Service(), FairMemoryReceiver.MemoryListener, BleConnectionMa
     @Inject lateinit var settingsRepository: SettingsRepository
     @Inject lateinit var heartRateDao: HeartRateDao
     @Inject lateinit var heartRateRepository: HeartRateRepository
+    @Inject lateinit var bleControlPlaneRegistry: BleControlPlaneRegistry
     @Inject lateinit var sessionRepository: SessionRepository
     @Inject lateinit var fairMemoryReceiver: FairMemoryReceiver
     @Inject lateinit var lanTransferSharedState: LanTransferSharedState
@@ -90,10 +90,10 @@ class BleService : Service(), FairMemoryReceiver.MemoryListener, BleConnectionMa
     override fun onCreate() {
         super.onCreate()
 
-        // 服务重建对账（契约 13）：状态流宿主已进程级化（HeartRateRepository），
+        // 服务重建对账：状态流宿主已进程级化（HeartRateRepository），
         // 本服务被系统杀死后 START_STICKY 重建时，Repository 保留着上一实例的
         // 连接态——UI 会展示幽灵连接（首页图表显示未连接、设备页显示已连接、
-        // 断开命令因新 Handler 无活动任务而静默落空）。迁移前该状态随 Handler
+        // 断开命令因新 Handler 无活动任务而静默落空）。迁移前该状态随 BleConnectionHandler
         // 生灭自然自愈，此处显式回归该语义；必须先于任何组件消费 Repository 状态。
         heartRateRepository.resetForNewServiceInstance()
 
@@ -111,6 +111,9 @@ class BleService : Service(), FairMemoryReceiver.MemoryListener, BleConnectionMa
 
         // 注册断开 WebSocket 客户端的回调，供局域网传输页面「断开连接」按钮调用
         lanTransferSharedState.disconnectWebSocketClients = { serverHost.disconnectAllWebSocketClients() }
+
+        // 注册进程级控制面：多 Activity 下各 MainViewModel 实例经此获取活服务
+        bleControlPlaneRegistry.register(this)
 
         notificationManager.startForeground()
         settingsListener.register()
@@ -207,7 +210,7 @@ class BleService : Service(), FairMemoryReceiver.MemoryListener, BleConnectionMa
             serviceScope.launch { heartRateRecorder.endSession() }
         },
         onChartCacheClear = {
-            // 关闭历史记录开关时清空图表缓存（原 UI 层 ChartDataManager.clear 联动下移至服务层）
+            // 关闭历史记录开关时清空图表缓存（联动下移）
             // SessionChartTracker 方法 @Synchronized 线程安全，无需切线程
             connectionHandler.clearChartCache()
         }
@@ -235,6 +238,7 @@ class BleService : Service(), FairMemoryReceiver.MemoryListener, BleConnectionMa
         lanTransferSharedState.webSocketClientCount.value = 0
         lanTransferSharedState.connectedClientInfo.value = null
         fairMemoryReceiver.removeMemoryListener(this)
+        bleControlPlaneRegistry.unregister(this)
         // 从缓冲区取出待写入记录并交给 WorkManager 异步落盘。
         // 不在主线程阻塞等待 I/O，消除 ANR 风险；
         // WorkManager 持久化工作请求——即使进程被杀也会在下次启动时补执行，保证数据不丢失。

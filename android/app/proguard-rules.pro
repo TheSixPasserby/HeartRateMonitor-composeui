@@ -18,7 +18,7 @@
 # 2. Kotlin 元数据保留（Kotlin 反射 / 协程内部依赖）
 #    - kotlin.Metadata：R8 默认保留（mapping.txt 已验证未改名）
 #    - **$$serializer：kotlinx.serialization 需要，库自带 consumer-rules 已覆盖，
-#      项目特定类名保留见下方第 18 节
+#      项目特定类名保留见第 9 节（Webhook / Posture）
 # ----------------------------------------------------------------------------
 -keepclassmembers class kotlin.** { *; }
 -dontwarn kotlin.**
@@ -114,6 +114,8 @@
 # ----------------------------------------------------------------------------
 -keep class com.github.heartratemonitor_compose.HeartRateApp { *; }
 -keep class com.github.heartratemonitor_compose.ui.main.MainActivity { *; }
+# 18 个二级页 Activity（2026-09 多 Activity 迁移，manifest 引用 + 生命周期方法不被混淆）
+-keep class com.github.heartratemonitor_compose.ui.page.** { *; }
 -keep class com.github.heartratemonitor_compose.service.BleService { *; }
 -keep class com.github.heartratemonitor_compose.service.FloatingWindowService { *; }
 -keep class com.github.heartratemonitor_compose.service.StatusBarResidentService { *; }
@@ -199,25 +201,6 @@
 #     R8 默认会将 R 字段内联为编译期常量并移除 R 类本身（mapping.txt 已验证
 #     heartratemonitor_compose.R 不存在）。无需手动 keep。
 # ----------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------
-# 18. kotlinx.serialization（navigation3 返回栈持久化：AppNavKey 为 @Serializable）
-#     AppNavKey 及其 18 个子类型被 navigation3 rememberNavBackStack 用于持久化
-#     返回栈，运行时通过编译器生成的 $$serializer 反射序列化/反序列化。
-#
-#     kotlinx.serialization 自带的 consumer-rules（rules/common.pro）已覆盖：
-#     - @Serializable 类的 Companion / INSTANCE / serializer() 方法
-#     - $$serializer 的 descriptor 字段
-#     - RuntimeVisibleAnnotations / AnnotationDefault 属性
-#
-#     此处仅补充项目特定的 AppNavKey sealed 接口及其全部嵌套子类型，
-#     确保多态序列化的类名（type discriminator）不被混淆——
-#     官方规则保留 Companion 和 $$serializer，但不保留类名本身，
-#     而密封类的序列化输出以 "companion_qualified_name" 作为子类型标签。
-# ----------------------------------------------------------------------------
--keep,includedescriptorclasses class com.github.heartratemonitor_compose.ui.AppNavKey { *; }
--keep,includedescriptorclasses class com.github.heartratemonitor_compose.ui.AppNavKey$* { *; }
--keep,includedescriptorclasses class com.github.heartratemonitor_compose.ui.AppNavKey$*$* { *; }
 
 # ----------------------------------------------------------------------------
 # 19. Coil 3（图片加载，自带 consumer-rules，仅 dontwarn 兜底）
