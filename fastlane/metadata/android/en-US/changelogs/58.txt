@@ -1,0 +1,3 @@
+- Heart rate recording and CSV export normalized to 1 row per second (gaps >1s forward-filled, >10s left as-is)
+- Live chart clears and redraws from 0s when manual recording starts
+- Three recording modes: manual / auto / off (default manual), with a record button and timer on the home top bar

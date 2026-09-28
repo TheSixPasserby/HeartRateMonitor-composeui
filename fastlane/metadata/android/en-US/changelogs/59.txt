@@ -1,0 +1,3 @@
+- Fix double-tapping "start recording" possibly creating an empty history session
+- Fix stale "recording" timer shown after switching to "off" mid-recording and back to manual
+- Recording mode selector: tapping the already-selected mode closes directly without re-showing the warning
