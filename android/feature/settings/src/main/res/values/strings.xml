@@ -143,9 +143,9 @@
     <string name="oppo_desc">Fair Memory Adaptation Guide</string>
     <string name="vivo_desc">Fair Memory Mechanism Adaptation</string>
     <string name="xiaomi_desc">Fair Memory Adaptation: Developer Documentation</string>
-    <string name="update_no_release">No releases found. Please publish a release on Gitee first.</string>
-    <string name="update_api_rate_limit">Gitee API rate limited. Please try again later.</string>
-    <string name="update_api_error">Gitee API returned error code: %1$s</string>
+    <string name="update_no_release">No releases found. Please publish a release on GitHub first.</string>
+    <string name="update_api_rate_limit">GitHub API rate limited. Please try again later.</string>
+    <string name="update_api_error">GitHub API returned error code: %1$s</string>
     <string name="update_network_error">Network error: %1$s</string>
     <string name="update_no_valid_release">No valid official release found</string>
     <string name="theme_settings">Theme</string>

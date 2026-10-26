@@ -143,9 +143,9 @@
     <string name="oppo_desc">คู่มือการปรับใช้แฟร์เมโมรี</string>
     <string name="vivo_desc">การปรับใช้กลไกแฟร์เมโมรี</string>
     <string name="xiaomi_desc">การปรับใช้แฟร์เมโมรี: เอกสารสำหรับนักพัฒนา</string>
-    <string name="update_no_release">ไม่พบ Release โปรดเผยแพร่ Release บน Gitee ก่อน</string>
-    <string name="update_api_rate_limit">เกินขีดจำกัด API ของ Gitee โปรดลองอีกครั้งในภายหลัง</string>
-    <string name="update_api_error">Gitee API ส่งคืนรหัสข้อผิดพลาด: %1$s</string>
+    <string name="update_no_release">ไม่พบ Release โปรดเผยแพร่ Release บน GitHub ก่อน</string>
+    <string name="update_api_rate_limit">เกินขีดจำกัด API ของ GitHub โปรดลองอีกครั้งในภายหลัง</string>
+    <string name="update_api_error">GitHub API ส่งคืนรหัสข้อผิดพลาด: %1$s</string>
     <string name="update_network_error">ข้อผิดพลาดเครือข่าย: %1$s</string>
     <string name="update_no_valid_release">ไม่พบ Release อย่างเป็นทางการที่ถูกต้อง</string>
     <string name="theme_settings">ธีม</string>

@@ -143,9 +143,9 @@
     <string name="oppo_desc">फेयर मेमोरी अनुकूलन गाइड</string>
     <string name="vivo_desc">फेयर मेमोरी तंत्र अनुकूलन</string>
     <string name="xiaomi_desc">फेयर मेमोरी अनुकूलन: डेवलपर दस्तावेज़</string>
-    <string name="update_no_release">कोई रिलीज़ नहीं मिला। कृपया पहले Gitee पर रिलीज़ प्रकाशित करें।</string>
-    <string name="update_api_rate_limit">Gitee API सीमा पार हो गई। कृपया बाद में पुनः प्रयास करें।</string>
-    <string name="update_api_error">Gitee API ने त्रुटि कोड लौटाया: %1$s</string>
+    <string name="update_no_release">कोई रिलीज़ नहीं मिला। कृपया पहले GitHub पर रिलीज़ प्रकाशित करें।</string>
+    <string name="update_api_rate_limit">GitHub API सीमा पार हो गई। कृपया बाद में पुनः प्रयास करें।</string>
+    <string name="update_api_error">GitHub API ने त्रुटि कोड लौटाया: %1$s</string>
     <string name="update_network_error">नेटवर्क त्रुटि: %1$s</string>
     <string name="update_no_valid_release">कोई मान्य आधिकारिक रिलीज़ नहीं मिला</string>
     <string name="theme_settings">थीम</string>

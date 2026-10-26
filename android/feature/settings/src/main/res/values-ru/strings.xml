@@ -143,9 +143,9 @@
     <string name="oppo_desc">Руководство по адаптации Фэр Мемори</string>
     <string name="vivo_desc">Адаптация к механизму Фэр Мемори</string>
     <string name="xiaomi_desc">Адаптация Фэр Мемори: документация для разработчиков</string>
-    <string name="update_no_release">Релизы не найдены. Сначала опубликуйте релиз на Gitee.</string>
-    <string name="update_api_rate_limit">Превышен лимит запросов к API Gitee. Попробуйте позже.</string>
-    <string name="update_api_error">API Gitee вернул код ошибки: %1$s</string>
+    <string name="update_no_release">Релизы не найдены. Сначала опубликуйте релиз на GitHub.</string>
+    <string name="update_api_rate_limit">Превышен лимит запросов к API GitHub. Попробуйте позже.</string>
+    <string name="update_api_error">API GitHub вернул код ошибки: %1$s</string>
     <string name="update_network_error">Сетевая ошибка: %1$s</string>
     <string name="update_no_valid_release">Не найден действительный официальный релиз</string>
     <string name="theme_settings">Тема</string>

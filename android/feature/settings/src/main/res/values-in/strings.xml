@@ -143,9 +143,9 @@
     <string name="oppo_desc">Panduan adaptasi Fair Memory</string>
     <string name="vivo_desc">Adaptasi mekanisme Fair Memory</string>
     <string name="xiaomi_desc">Adaptasi Fair Memory: dokumentasi pengembang</string>
-    <string name="update_no_release">Tidak ada rilis ditemukan. Harap publikasikan rilis di Gitee terlebih dahulu.</string>
-    <string name="update_api_rate_limit">Batas API Gitee terlampaui. Silakan coba lagi nanti.</string>
-    <string name="update_api_error">API Gitee mengembalikan kode kesalahan: %1$s</string>
+    <string name="update_no_release">Tidak ada rilis ditemukan. Harap publikasikan rilis di GitHub terlebih dahulu.</string>
+    <string name="update_api_rate_limit">Batas API GitHub terlampaui. Silakan coba lagi nanti.</string>
+    <string name="update_api_error">API GitHub mengembalikan kode kesalahan: %1$s</string>
     <string name="update_network_error">Kesalahan jaringan: %1$s</string>
     <string name="update_no_valid_release">Tidak ada rilis resmi yang valid ditemukan</string>
     <string name="theme_settings">Tema</string>

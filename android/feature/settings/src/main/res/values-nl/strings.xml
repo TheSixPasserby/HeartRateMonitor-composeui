@@ -143,9 +143,9 @@
     <string name="oppo_desc">Fair Memory-aanpassingshandleiding</string>
     <string name="vivo_desc">Fair Memory-mechanisme-aanpassing</string>
     <string name="xiaomi_desc">Fair Memory-aanpassing: ontwikkelaarsdocumentatie</string>
-    <string name="update_no_release">Geen releases gevonden. Publiceer eerst een release op Gitee.</string>
-    <string name="update_api_rate_limit">Gitee API-limiet overschreden. Probeer het later opnieuw.</string>
-    <string name="update_api_error">Gitee API heeft een foutcode geretourneerd: %1$s</string>
+    <string name="update_no_release">Geen releases gevonden. Publiceer eerst een release op GitHub.</string>
+    <string name="update_api_rate_limit">GitHub API-limiet overschreden. Probeer het later opnieuw.</string>
+    <string name="update_api_error">GitHub API heeft een foutcode geretourneerd: %1$s</string>
     <string name="update_network_error">Netwerkfout: %1$s</string>
     <string name="update_no_valid_release">Geen geldige officiële release gevonden</string>
     <string name="theme_settings">Thema</string>

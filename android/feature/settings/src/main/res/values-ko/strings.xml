@@ -143,9 +143,9 @@
     <string name="oppo_desc">페어 메모리 대응 가이드</string>
     <string name="vivo_desc">페어 메모리 메커니즘 대응</string>
     <string name="xiaomi_desc">페어 메모리 대응: 개발자 문서</string>
-    <string name="update_no_release">Release를 찾지 못했습니다. 먼저 Gitee에 Release를 게시하세요.</string>
-    <string name="update_api_rate_limit">Gitee API 요청 한도에 도달했습니다. 잠시 후 다시 시도하세요.</string>
-    <string name="update_api_error">Gitee API가 오류 코드를 반환했습니다: %1$s</string>
+    <string name="update_no_release">Release를 찾지 못했습니다. 먼저 GitHub에 Release를 게시하세요.</string>
+    <string name="update_api_rate_limit">GitHub API 요청 한도에 도달했습니다. 잠시 후 다시 시도하세요.</string>
+    <string name="update_api_error">GitHub API가 오류 코드를 반환했습니다: %1$s</string>
     <string name="update_network_error">네트워크 오류: %1$s</string>
     <string name="update_no_valid_release">유효한 공식 Release를 찾지 못했습니다</string>
     <string name="theme_settings">테마</string>

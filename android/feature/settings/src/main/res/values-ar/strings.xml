@@ -143,9 +143,9 @@
     <string name="oppo_desc">دليل تكيف فير ميموري</string>
     <string name="vivo_desc">تكيف آلية فير ميموري</string>
     <string name="xiaomi_desc">تكيف فير ميموري: وثائق المطور</string>
-    <string name="update_no_release">لم يتم العثور على إصدارات. يرجى نشر إصدار على Gitee أولاً.</string>
-    <string name="update_api_rate_limit">تم تجاوز حد واجهة برمجة تطبيقات Gitee. يرجى المحاولة لاحقًا.</string>
-    <string name="update_api_error">أعادت واجهة برمجة تطبيقات Gitee رمز خطأ: %1$s</string>
+    <string name="update_no_release">لم يتم العثور على إصدارات. يرجى نشر إصدار على GitHub أولاً.</string>
+    <string name="update_api_rate_limit">تم تجاوز حد واجهة برمجة تطبيقات GitHub. يرجى المحاولة لاحقًا.</string>
+    <string name="update_api_error">أعادت واجهة برمجة تطبيقات GitHub رمز خطأ: %1$s</string>
     <string name="update_network_error">خطأ في الشبكة: %1$s</string>
     <string name="update_no_valid_release">لم يتم العثور على إصدار رسمي صالح</string>
     <string name="theme_settings">السمة</string>

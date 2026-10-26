@@ -143,9 +143,9 @@
     <string name="oppo_desc">Przewodnik adaptacji Fair Memory</string>
     <string name="vivo_desc">Adaptacja do mechanizmu Fair Memory</string>
     <string name="xiaomi_desc">Adaptacja Fair Memory: dokumentacja dla programistów</string>
-    <string name="update_no_release">Nie znaleziono wydań. Najpierw opublikuj wydanie na Gitee.</string>
-    <string name="update_api_rate_limit">Przekroczono limit API Gitee. Spróbuj później.</string>
-    <string name="update_api_error">API Gitee zwróciło kod błędu: %1$s</string>
+    <string name="update_no_release">Nie znaleziono wydań. Najpierw opublikuj wydanie na GitHub.</string>
+    <string name="update_api_rate_limit">Przekroczono limit API GitHub. Spróbuj później.</string>
+    <string name="update_api_error">API GitHub zwróciło kod błędu: %1$s</string>
     <string name="update_network_error">Błąd sieci: %1$s</string>
     <string name="update_no_valid_release">Nie znaleziono ważnego oficjalnego wydania</string>
     <string name="theme_settings">Motyw</string>

@@ -143,9 +143,9 @@
     <string name="oppo_desc">公平运行内存适配指南</string>
     <string name="vivo_desc">公平运行内存机制适配</string>
     <string name="xiaomi_desc">公平运行内存适配：开发者文档</string>
-    <string name="update_no_release">未找到任何 Release，请先在 Gitee 上发布一个版本</string>
-    <string name="update_api_rate_limit">Gitee API 限流，请稍后再试</string>
-    <string name="update_api_error">Gitee API 返回错误码：%1$s</string>
+    <string name="update_no_release">未找到任何 Release，请先在 GitHub 上发布一个版本</string>
+    <string name="update_api_rate_limit">GitHub API 限流，请稍后再试</string>
+    <string name="update_api_error">GitHub API 返回错误码：%1$s</string>
     <string name="update_network_error">网络错误：%1$s</string>
     <string name="update_no_valid_release">未找到有效的正式 Release</string>
     <string name="theme_settings">主题设置</string>

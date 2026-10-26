@@ -143,9 +143,9 @@
     <string name="oppo_desc">Fair Memory uyarlama kılavuzu</string>
     <string name="vivo_desc">Fair Memory mekanizması uyarlaması</string>
     <string name="xiaomi_desc">Fair Memory uyarlaması: geliştirici belgeleri</string>
-    <string name="update_no_release">Sürüm bulunamadı. Lütfen önce Gitee\'de bir sürüm yayınlayın.</string>
-    <string name="update_api_rate_limit">Gitee API sınırı aşıldı. Lütfen daha sonra tekrar deneyin.</string>
-    <string name="update_api_error">Gitee API hata kodu döndürdü: %1$s</string>
+    <string name="update_no_release">Sürüm bulunamadı. Lütfen önce GitHub\'de bir sürüm yayınlayın.</string>
+    <string name="update_api_rate_limit">GitHub API sınırı aşıldı. Lütfen daha sonra tekrar deneyin.</string>
+    <string name="update_api_error">GitHub API hata kodu döndürdü: %1$s</string>
     <string name="update_network_error">Ağ hatası: %1$s</string>
     <string name="update_no_valid_release">Geçerli resmi sürüm bulunamadı</string>
     <string name="theme_settings">Tema</string>

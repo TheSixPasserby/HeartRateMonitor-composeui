@@ -143,9 +143,9 @@
     <string name="oppo_desc">Gabay sa pag-aangkop ng Fair Memory</string>
     <string name="vivo_desc">Pag-aangkop ng mekanismo ng Fair Memory</string>
     <string name="xiaomi_desc">Pag-aangkop ng Fair Memory: dokumentasyon ng developer</string>
-    <string name="update_no_release">Walang nakitang release. Mangyaring mag-publish muna ng release sa Gitee.</string>
-    <string name="update_api_rate_limit">Lumampas sa limitasyon ng API ng Gitee. Subukang muli mamaya.</string>
-    <string name="update_api_error">Nagbalik ng error code ang API ng Gitee: %1$s</string>
+    <string name="update_no_release">Walang nakitang release. Mangyaring mag-publish muna ng release sa GitHub.</string>
+    <string name="update_api_rate_limit">Lumampas sa limitasyon ng API ng GitHub. Subukang muli mamaya.</string>
+    <string name="update_api_error">Nagbalik ng error code ang API ng GitHub: %1$s</string>
     <string name="update_network_error">Error sa network: %1$s</string>
     <string name="update_no_valid_release">Walang nakitang wastong opisyal na release</string>
     <string name="theme_settings">Tema</string>

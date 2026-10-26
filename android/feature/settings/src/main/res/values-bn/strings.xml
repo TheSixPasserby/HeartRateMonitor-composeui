@@ -143,9 +143,9 @@
     <string name="oppo_desc">ফেয়ার মেমোরি অভিযোজন গাইড</string>
     <string name="vivo_desc">ফেয়ার মেমোরি মেকানিজম অভিযোজন</string>
     <string name="xiaomi_desc">ফেয়ার মেমোরি অভিযোজন: ডেভেলপার ডকুমেন্টেশন</string>
-    <string name="update_no_release">কোনো রিলিজ পাওয়া যায়নি। অনুগ্রহ করে আগে Gitee-তে রিলিজ প্রকাশ করুন।</string>
-    <string name="update_api_rate_limit">Gitee API সীমা অতিক্রম হয়েছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।</string>
-    <string name="update_api_error">Gitee API ত্রুটি কোড ফিরিয়েছে: %1$s</string>
+    <string name="update_no_release">কোনো রিলিজ পাওয়া যায়নি। অনুগ্রহ করে আগে GitHub-তে রিলিজ প্রকাশ করুন।</string>
+    <string name="update_api_rate_limit">GitHub API সীমা অতিক্রম হয়েছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।</string>
+    <string name="update_api_error">GitHub API ত্রুটি কোড ফিরিয়েছে: %1$s</string>
     <string name="update_network_error">নেটওয়ার্ক ত্রুটি: %1$s</string>
     <string name="update_no_valid_release">কোনো বৈধ অফিসিয়াল রিলিজ পাওয়া যায়নি</string>
     <string name="theme_settings">থিম</string>

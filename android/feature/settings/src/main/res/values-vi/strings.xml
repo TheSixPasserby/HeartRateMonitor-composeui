@@ -143,9 +143,9 @@
     <string name="oppo_desc">Hướng dẫn thích ứng Fair Memory</string>
     <string name="vivo_desc">Thích ứng cơ chế Fair Memory</string>
     <string name="xiaomi_desc">Thích ứng Fair Memory: tài liệu dành cho nhà phát triển</string>
-    <string name="update_no_release">Không tìm thấy bản phát hành. Vui lòng phát hành bản release trên Gitee trước.</string>
-    <string name="update_api_rate_limit">Đã vượt giới hạn API Gitee. Vui lòng thử lại sau.</string>
-    <string name="update_api_error">API Gitee trả về mã lỗi: %1$s</string>
+    <string name="update_no_release">Không tìm thấy bản phát hành. Vui lòng phát hành bản release trên GitHub trước.</string>
+    <string name="update_api_rate_limit">Đã vượt giới hạn API GitHub. Vui lòng thử lại sau.</string>
+    <string name="update_api_error">API GitHub trả về mã lỗi: %1$s</string>
     <string name="update_network_error">Lỗi mạng: %1$s</string>
     <string name="update_no_valid_release">Không tìm thấy bản phát hành chính thức hợp lệ</string>
     <string name="theme_settings">Chủ đề</string>

@@ -143,9 +143,9 @@
     <string name="oppo_desc">フェアメモリ対応ガイド</string>
     <string name="vivo_desc">フェアメモリメカニズム対応</string>
     <string name="xiaomi_desc">フェアメモリ対応: 開発者ドキュメント</string>
-    <string name="update_no_release">Releaseが見つかりません。先にGiteeでReleaseを公開してください。</string>
-    <string name="update_api_rate_limit">Gitee APIのレート制限中です。しばらくしてからもう一度お試しください。</string>
-    <string name="update_api_error">Gitee APIがエラーコードを返しました: %1$s</string>
+    <string name="update_no_release">Releaseが見つかりません。先にGitHubでReleaseを公開してください。</string>
+    <string name="update_api_rate_limit">GitHub APIのレート制限中です。しばらくしてからもう一度お試しください。</string>
+    <string name="update_api_error">GitHub APIがエラーコードを返しました: %1$s</string>
     <string name="update_network_error">ネットワークエラー: %1$s</string>
     <string name="update_no_valid_release">有効な正式Releaseが見つかりません</string>
     <string name="theme_settings">テーマ</string>

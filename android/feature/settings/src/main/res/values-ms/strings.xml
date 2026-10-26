@@ -143,9 +143,9 @@
     <string name="oppo_desc">Panduan penyesuaian Fair Memory</string>
     <string name="vivo_desc">Penyesuaian mekanisme Fair Memory</string>
     <string name="xiaomi_desc">Penyesuaian Fair Memory: dokumentasi pembangun</string>
-    <string name="update_no_release">Tiada keluaran ditemui. Sila terbitkan keluaran di Gitee dahulu.</string>
-    <string name="update_api_rate_limit">Had API Gitee dilebihi. Sila cuba lagi kemudian.</string>
-    <string name="update_api_error">API Gitee mengembalikan kod ralat: %1$s</string>
+    <string name="update_no_release">Tiada keluaran ditemui. Sila terbitkan keluaran di GitHub dahulu.</string>
+    <string name="update_api_rate_limit">Had API GitHub dilebihi. Sila cuba lagi kemudian.</string>
+    <string name="update_api_error">API GitHub mengembalikan kod ralat: %1$s</string>
     <string name="update_network_error">Ralat rangkaian: %1$s</string>
     <string name="update_no_valid_release">Tiada keluaran rasmi yang sah ditemui</string>
     <string name="theme_settings">Tema</string>
